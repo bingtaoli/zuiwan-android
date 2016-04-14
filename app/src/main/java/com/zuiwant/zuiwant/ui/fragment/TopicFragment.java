@@ -1,6 +1,7 @@
 package com.zuiwant.zuiwant.ui.fragment;
 
 import android.content.Context;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
@@ -11,13 +12,21 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
+import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.PersistentCookieStore;
+import com.loopj.android.http.TextHttpResponseHandler;
 import com.zuiwant.zuiwant.R;
 
 import com.zuiwant.zuiwant.model.TopicModel;
 import com.zuiwant.zuiwant.ui.adapter.BaseRecycleAdapter;
 import com.zuiwant.zuiwant.ui.adapter.TopicsAdapter;
 
+import org.apache.http.Header;
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
+
 
 /**
  * Created by libingtao on 16/4/13.
@@ -65,10 +74,58 @@ public class TopicFragment extends BaseFragment {
         mSwipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                //
+                getTopicList(getActivity());
+                Log.d("lee", "on refreshing");
             }
         });
 
         return layout;
     }
+
+    public ArrayList getTopicList(Context ctx) {
+        ArrayList<TopicModel> list = new ArrayList<>();
+        AsyncHttpClient client =  new AsyncHttpClient();
+        client.get("http://zuiwant.com/zuiwan-backend/index.php/topic/get_topic", new TextHttpResponseHandler() {
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                Log.d("lee", "fail get topic list");
+                //TODO remind failure
+                //SafeHandler.onFailure(handler, V2EXErrorType.errorMessage(ctx, V2EXErrorType.ErrorGetTopicListFailure));
+            }
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, final String responseBody) {
+                new AsyncTask<Void, Void, ArrayList>() {
+                    @Override
+                    protected ArrayList doInBackground(Void... params) {
+                        ArrayList<TopicModel> list = new ArrayList<>();
+                        try {
+                            JSONArray array = new JSONArray(responseBody);
+                            for (int i = 0; i < array.length(); i++){
+                                JSONObject obj =  array.getJSONObject(i);
+                                TopicModel topic = new TopicModel();
+                                topic.topicIntro = obj.optString("topic_intro");
+                                topic.topicName = obj.optString("topic_name");
+                                topic.articleNum = obj.optInt("article_count");
+                                list.add(topic);
+                            }
+                            Log.d("lee", "doing get topic list");
+                            Log.d("lee", "result is " + responseBody);
+                            return list;
+                        } catch (Exception e) {
+                            return null;
+                        }
+                    }
+
+                    @Override
+                    protected void onPostExecute(ArrayList topics) {
+                        Log.d("lee", "finished get topic list");
+                    }
+                }.execute();
+            }
+        });
+
+        return list;
+    }
+
 }

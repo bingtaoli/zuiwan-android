@@ -15,7 +15,7 @@ public class TopicModel extends ZuiwantModel implements Parcelable {
 
     private static final long serialVersionUID = 2015050105L;
 
-    public int topicId;
+    public int id;
     public String topicName;
     public int articleNum;
     public String topicIntro;
@@ -24,7 +24,7 @@ public class TopicModel extends ZuiwantModel implements Parcelable {
 
     public TopicModel(boolean test){
         if (test){
-            topicId = 1;
+            id = 1;
             topicName = "测试";
             topicIntro = "测试专题";
             articleNum = 1;
@@ -34,7 +34,7 @@ public class TopicModel extends ZuiwantModel implements Parcelable {
     private TopicModel(Parcel in){
         int[] ints= new int[2];
         in.readIntArray(ints);
-        topicId = ints[0];
+        id = ints[0];
         articleNum = ints[1];
         String[] strings = new String[2];
         topicName = strings[0];
@@ -43,8 +43,7 @@ public class TopicModel extends ZuiwantModel implements Parcelable {
 
     @Override
     public void parse(JSONObject jsonObject) throws JSONException {
-
-        topicId = jsonObject.getInt("id");
+        id = jsonObject.getInt("id");
         articleNum = jsonObject.getInt("articleNum");
         topicName = jsonObject.getString("topicName");
         topicIntro = jsonObject.getString("topicIntro");
