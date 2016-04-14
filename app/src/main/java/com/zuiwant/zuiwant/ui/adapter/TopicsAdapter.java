@@ -9,6 +9,7 @@ import android.widget.TextView;
 import com.zuiwant.zuiwant.R;
 import com.zuiwant.zuiwant.model.TopicModel;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -16,7 +17,11 @@ import java.util.List;
  */
 public class TopicsAdapter extends BaseRecycleAdapter {
 
-    private List<TopicModel> topics;
+    private List<TopicModel> topics = new ArrayList<>();
+
+    public TopicsAdapter(Context context){
+        super(context);
+    }
 
     public TopicsAdapter(Context context, List<TopicModel> topics) {
         super(context);
@@ -52,6 +57,15 @@ public class TopicsAdapter extends BaseRecycleAdapter {
             topicIntro = (TextView) itemView.findViewById(R.id.topicIntro);
             articleNum = (TextView) itemView.findViewById(R.id.txt_articles);
         }
+    }
+
+    public void insertAtBack(ArrayList<TopicModel> data, boolean merge) {
+        if (merge)
+            topics.addAll(data);
+        else
+            topics = data;
+        //通知内容view已经更新
+        notifyDataSetChanged();
     }
 
 }

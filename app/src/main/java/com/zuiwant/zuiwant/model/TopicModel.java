@@ -2,12 +2,13 @@ package com.zuiwant.zuiwant.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.util.Log;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
- * Created by libingtao on 16/4/13.
+ * Created by matthew on 16/4/13.
  * 实现Parcelable接口,Parcelable是Android特有的功能，效率比实现Serializable接口高，像用于Intent数据传递也都支持，
  * 而且还可以用在进程间通信(IPC)，除了基本类型外，只有实现了Parcelable接口的类才能被放入Parcel中。
  */
@@ -41,12 +42,19 @@ public class TopicModel extends ZuiwantModel implements Parcelable {
         topicIntro = strings[1];
     }
 
+    /**
+     * 在JsonHttpResponseHandler中调用
+     * @param jsonObject
+     * @throws JSONException
+     */
     @Override
     public void parse(JSONObject jsonObject) throws JSONException {
+        Log.d("lee", "topic model parse");
         id = jsonObject.getInt("id");
-        articleNum = jsonObject.getInt("articleNum");
-        topicName = jsonObject.getString("topicName");
-        topicIntro = jsonObject.getString("topicIntro");
+        Log.d("lee", "topic model parse, this json obj id is " + id);
+        articleNum = jsonObject.getInt("article_count");
+        topicName = jsonObject.getString("topic_name");
+        topicIntro = jsonObject.getString("topic_intro");
     }
 
     @Override
