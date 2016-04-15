@@ -2,45 +2,35 @@ package com.zuiwant.zuiwant.ui.fragment;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.view.View;
 
 /**
  * Created by yw on 2015/5/3.
  */
-public class BaseFragment extends Fragment  {
+public class BaseFragment extends AbstractBaseFragment  {
 
-    protected boolean mIsLogin;
-
-
-    public static interface BackHandledInterface {
-        public abstract void setSelectedFragment(BaseFragment selectedFragment);
+    @Override
+    protected int setRootViewResId() {
+        return 0;
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    protected void beforeInitView() {
+
     }
 
     @Override
-    public void onStart() {
-        super.onStart();
+    protected void initView() {
+
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
+    protected void setViewStatus() {
+
     }
 
     @Override
-    public void onPause() {
-        super.onPause();
-    }
+    public void onClick(View v) {
 
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-    }
-
-    public boolean onBackPressed() {
-        return false;
     }
 }

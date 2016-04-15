@@ -3,10 +3,11 @@ package com.zuiwant.zuiwant.ui.adapter;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import com.facebook.drawee.view.SimpleDraweeView;
 import com.zuiwant.zuiwant.R;
 import com.zuiwant.zuiwant.model.TopicModel;
 
@@ -14,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by libingtao on 16/4/13.
+ * Created by matthew on 16/4/13.
  */
 public class TopicsAdapter extends BaseRecycleAdapter {
 
@@ -30,8 +31,7 @@ public class TopicsAdapter extends BaseRecycleAdapter {
     }
 
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
-        View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_topic, viewGroup, false);
-        return new TopicViewHolder(v);
+        return new TopicViewHolder(inflater.inflate(R.layout.item_topic, viewGroup, false));
     }
 
     @Override
@@ -56,12 +56,14 @@ public class TopicsAdapter extends BaseRecycleAdapter {
 
     public class TopicViewHolder extends BaseViewHolder {
 
+        SimpleDraweeView ivCover;
         public TextView topicName;
         public TextView articleNum;
         public TextView topicIntro;
 
         public TopicViewHolder(View itemView) {
             super(itemView);
+            ivCover = (SimpleDraweeView) itemView.findViewById(R.id.iv_cover);
             topicName = (TextView) itemView.findViewById(R.id.topic_name);
             topicIntro = (TextView) itemView.findViewById(R.id.topicIntro);
             articleNum = (TextView) itemView.findViewById(R.id.txt_articles);

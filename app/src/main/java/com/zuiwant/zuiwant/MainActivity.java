@@ -8,6 +8,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TabHost;
 
+import com.facebook.drawee.backends.pipeline.Fresco;
 import com.zuiwant.zuiwant.ui.fragment.MediaFragment;
 import com.zuiwant.zuiwant.ui.fragment.TopicFragment;
 import com.zuiwant.zuiwant.ui.widget.ChangeColorIconWithText;
@@ -26,6 +27,9 @@ public class MainActivity extends AppCompatActivity implements TabHost.OnTabChan
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        //初始化Fresco,很重要
+        Fresco.initialize(MainActivity.this);
 
         initTabHost();
     }
@@ -67,7 +71,7 @@ public class MainActivity extends AppCompatActivity implements TabHost.OnTabChan
         texts[0] = getString(R.string.title_activity_main_recommend);
         tabviews[0] = getTabView(R.layout.item_tab_recommend);
         tabSpecs[0] = mTabHost.newTabSpec(texts[0]).setIndicator(tabviews[0]);
-        mTabHost.addTab(tabSpecs[0], ViewPagerFragment.class, bundle);
+        mTabHost.addTab(tabSpecs[0], TopicFragment.class, bundle);
         mTabIndicators.add(tabviews[0]);
 
         texts[1] = getString(R.string.title_activity_main_topic);
