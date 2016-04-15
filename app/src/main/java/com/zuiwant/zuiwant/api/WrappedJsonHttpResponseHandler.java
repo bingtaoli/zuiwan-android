@@ -33,6 +33,12 @@ class WrappedJsonHttpResponseHandler<T extends ZuiwantModel> extends JsonHttpRes
         this.key = key;
     }
 
+    /**
+     * 像get_recommend这种接口返回的就是Object了
+     * @param statusCode
+     * @param headers
+     * @param response
+     */
     @Override
     public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
         ArrayList<T> models = new ArrayList<T>();
@@ -57,13 +63,25 @@ class WrappedJsonHttpResponseHandler<T extends ZuiwantModel> extends JsonHttpRes
      *      {id: xx, topic_name: xxx, topic_intro: xxx},
      *      {id: xx, topic_name: xxx, topic_intro: xxx},
      * ]
+     * 解析recommend是不一样的,因为get_recommend接口返回的json是:
+     * {
+     *     banner: [
+     *          {id: xxx, article_title: xxx},
+     *          {id: xxx, article_title: xxx},
+     *     ],
+     *     recommend: [
+     *          {id: xxx, article_title: xxx},
+     *          {id: xxx, article_title: xxx},
+     *     ],
+     *     recommendCount: int
+     * } 则使用上面的函数进行处理
      * @param statusCode
      * @param headers
      * @param response
      */
     @Override
     public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
-        Log.d("lee", "json http response success");
+        Log.d("lee", "json http response success, model type: " + c.getName());
         ArrayList<T> models = new ArrayList<T>();
         Log.d("lee", "json response length is " + response.length());
         for (int i = 0; i < response.length(); i++) {

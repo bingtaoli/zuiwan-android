@@ -8,6 +8,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TabHost;
 
+import com.zuiwant.zuiwant.ui.fragment.MediaFragment;
 import com.zuiwant.zuiwant.ui.fragment.TopicFragment;
 import com.zuiwant.zuiwant.ui.widget.ChangeColorIconWithText;
 import com.zuiwant.zuiwant.ui.fragment.ViewPagerFragment;
@@ -78,7 +79,7 @@ public class MainActivity extends AppCompatActivity implements TabHost.OnTabChan
         texts[2] = getString(R.string.title_activity_main_media);
         tabviews[2] = getTabView(R.layout.item_tab_media);
         tabSpecs[2] = mTabHost.newTabSpec(texts[2]).setIndicator(tabviews[2]);
-        mTabHost.addTab(tabSpecs[2], ViewPagerFragment.class, null);
+        mTabHost.addTab(tabSpecs[2], MediaFragment.class, null);
         mTabIndicators.add(tabviews[2]);
 
         mTabHost.setOnTabChangedListener(this);

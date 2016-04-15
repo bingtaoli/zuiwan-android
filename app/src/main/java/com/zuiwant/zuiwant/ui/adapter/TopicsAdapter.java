@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import com.zuiwant.zuiwant.R;
 import com.zuiwant.zuiwant.model.TopicModel;
-import com.zuiwant.zuiwant.ui.fragment.TopicFragment;
 
 import java.util.ArrayList;
 import java.util.List;
