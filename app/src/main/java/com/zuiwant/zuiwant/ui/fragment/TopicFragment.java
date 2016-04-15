@@ -1,7 +1,6 @@
 package com.zuiwant.zuiwant.ui.fragment;
 
 import android.content.Context;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
@@ -21,7 +20,6 @@ import com.zuiwant.zuiwant.ui.adapter.BaseRecycleAdapter;
 import com.zuiwant.zuiwant.ui.adapter.TopicsAdapter;
 
 import java.util.ArrayList;
-
 
 /**
  * Created by matthew on 16/4/13.
@@ -71,6 +69,13 @@ public class TopicFragment extends BaseFragment implements HttpRequestHandler<Ar
         });
 
         return layout;
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState){
+        super.onActivityCreated(savedInstanceState);
+        mSwipeLayout.setRefreshing(true);
+        requestTopics(false);
     }
 
     private void requestTopics(boolean refresh){

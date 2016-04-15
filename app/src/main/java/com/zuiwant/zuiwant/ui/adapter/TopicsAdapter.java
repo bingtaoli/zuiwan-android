@@ -2,12 +2,14 @@ package com.zuiwant.zuiwant.ui.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import com.zuiwant.zuiwant.R;
 import com.zuiwant.zuiwant.model.TopicModel;
+import com.zuiwant.zuiwant.ui.fragment.TopicFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,11 +35,19 @@ public class TopicsAdapter extends BaseRecycleAdapter {
         return new TopicViewHolder(v);
     }
 
-    public void onBindViewHolder(TopicViewHolder viewHolder, int i) {
+    @Override
+    public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, int i) {
+        /**
+         * NOTE
+         * 不能把参数设置成TopicViewHolder,那样不能Override
+         */
+        TopicViewHolder topicViewHolder = (TopicViewHolder) viewHolder;
         final TopicModel topic = topics.get(i);
-        viewHolder.topicName.setText(topic.topicName);
-        viewHolder.articleNum.setText(String.valueOf(topic.articleNum));
-        viewHolder.topicIntro.setText(topic.topicIntro);
+        Log.d("lee", "topics adapter set topic name" + topic.topicName);
+        topicViewHolder.topicName.setText(topic.topicName);
+        Log.d("lee", "topics adapter set topic article count" + topic.articleNum);
+        topicViewHolder.articleNum.setText(String.valueOf(topic.articleNum));
+        topicViewHolder.topicIntro.setText(topic.topicIntro);
     }
 
     @Override
