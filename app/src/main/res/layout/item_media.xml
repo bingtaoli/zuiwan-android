@@ -1,22 +1,27 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:card_view="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/card_container"
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:fresco="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="4dp"
-    android:layout_marginLeft="8dp"
-    android:layout_marginRight="8dp"
-    android:layout_marginTop="4dp"
-    android:background="#fff"
-    android:foreground="?android:selectableItemBackground"
+    android:layout_margin="8dp"
     android:orientation="horizontal">
 
     <RelativeLayout
-        android:id="@+id/info"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="horizontal"
         android:padding="10dp">
+
+        <com.facebook.drawee.view.SimpleDraweeView
+            android:id="@+id/avatar"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:padding="0.1dp"
+            fresco:actualImageScaleType="centerCrop"
+            fresco:placeholderImage="@drawable/zw_logo"
+            fresco:placeholderImageScaleType="centerInside"/>
 
         <RelativeLayout
             android:id="@+id/relativeLayout"
@@ -24,8 +29,8 @@
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:layout_marginLeft="10dp"
-            android:layout_toLeftOf="@+id/articles_layout"
-            >
+            android:layout_toRightOf="@+id/avatar"
+            android:layout_toLeftOf="@+id/article_count_layout">
 
             <!--媒体简介-->
             <TextView
@@ -49,12 +54,10 @@
                 android:text="V2ex"
                 android:textSize="12sp"/>
 
-
         </RelativeLayout>
 
-        <!--媒体文章数-->
         <RelativeLayout
-            android:id="@+id/articles_layout"
+            android:id="@+id/article_count_layout"
             android:layout_width="40dp"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
@@ -62,6 +65,7 @@
             android:layout_marginLeft="2dp"
             android:layout_marginStart="2dp">
 
+            <!--媒体文章数-->
             <TextView
                 android:id="@+id/txt_articles"
                 android:layout_width="wrap_content"
@@ -70,6 +74,7 @@
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:text="0" />
+
         </RelativeLayout>
 
     </RelativeLayout>

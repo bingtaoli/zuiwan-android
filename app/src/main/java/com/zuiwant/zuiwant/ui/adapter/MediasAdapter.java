@@ -1,11 +1,14 @@
 package com.zuiwant.zuiwant.ui.adapter;
 
 import android.content.Context;
+import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import com.facebook.drawee.view.SimpleDraweeView;
 import com.zuiwant.zuiwant.R;
 import com.zuiwant.zuiwant.model.MediaModel;
 
@@ -35,11 +38,14 @@ public class MediasAdapter extends BaseRecycleAdapter {
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, int i) {
-        MediaViewHolder topicViewHolder = (MediaViewHolder) viewHolder;
+        MediaViewHolder mediaViewHolder = (MediaViewHolder) viewHolder;
         final MediaModel media = medias.get(i);
-        topicViewHolder.mediaName.setText(media.mediaName);
-        topicViewHolder.articleNum.setText(String.valueOf(media.articleNum));
-        topicViewHolder.mediaIntro.setText(media.mediaIntro);
+        mediaViewHolder.mediaName.setText(media.mediaName);
+        mediaViewHolder.articleNum.setText(String.valueOf(media.articleNum));
+        mediaViewHolder.mediaIntro.setText(media.mediaIntro);
+        if (media.mediaAvatar != null && media.mediaAvatar.length() > 0){
+            mediaViewHolder.ivCover.setImageURI(Uri.parse(media.mediaAvatar));
+        }
     }
 
     @Override
@@ -52,12 +58,14 @@ public class MediasAdapter extends BaseRecycleAdapter {
         public TextView mediaName;
         public TextView articleNum;
         public TextView mediaIntro;
+        SimpleDraweeView ivCover;
 
         public MediaViewHolder(View itemView) {
             super(itemView);
             mediaName = (TextView) itemView.findViewById(R.id.media_name);
             mediaIntro = (TextView) itemView.findViewById(R.id.media_intro);
             articleNum = (TextView) itemView.findViewById(R.id.txt_articles);
+            ivCover = (SimpleDraweeView) itemView.findViewById(R.id.avatar);
         }
     }
 

@@ -1,8 +1,8 @@
 package com.zuiwant.zuiwant.ui.adapter;
 
 import android.content.Context;
+import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -42,11 +42,12 @@ public class TopicsAdapter extends BaseRecycleAdapter {
          */
         TopicViewHolder topicViewHolder = (TopicViewHolder) viewHolder;
         final TopicModel topic = topics.get(i);
-        Log.d("lee", "topics adapter set topic name" + topic.topicName);
         topicViewHolder.topicName.setText(topic.topicName);
-        Log.d("lee", "topics adapter set topic article count" + topic.articleNum);
         topicViewHolder.articleNum.setText(String.valueOf(topic.articleNum));
         topicViewHolder.topicIntro.setText(topic.topicIntro);
+        if (topic.topicImg != null && topic.topicImg.length() > 0){
+            topicViewHolder.ivCover.setImageURI(Uri.parse(topic.topicImg));
+        }
     }
 
     @Override

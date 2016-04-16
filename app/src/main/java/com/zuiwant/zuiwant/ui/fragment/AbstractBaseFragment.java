@@ -30,6 +30,9 @@ public abstract class AbstractBaseFragment extends Fragment implements View.OnCl
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        if (-1 == setRootViewResId()){
+            return null;
+        }
         rootView = inflater.inflate(setRootViewResId(), container, false);
         return rootView;
     }

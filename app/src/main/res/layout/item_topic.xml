@@ -14,7 +14,7 @@
         android:layout_height="160dp"
         android:padding="0.1dp"
         fresco:actualImageScaleType="centerCrop"
-        fresco:placeholderImage="@drawable/topic_detail_back"
+        fresco:placeholderImage="@drawable/ic_default_cover"
         fresco:placeholderImageScaleType="centerInside"/>
 
     <!--topic标题-->
@@ -22,7 +22,7 @@
         android:id="@+id/topic_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
+        android:layout_alignParentLeft="true"
         android:layout_margin="8dp"
         android:shadowColor="@color/gray"
         android:shadowDx="-1"

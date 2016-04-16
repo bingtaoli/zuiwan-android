@@ -16,6 +16,7 @@ public class MediaModel extends ZuiwantModel {
     public String mediaName;
     public int articleNum = 0;
     public String mediaIntro;
+    public String mediaAvatar;
 
     public MediaModel(){}
 
@@ -25,5 +26,6 @@ public class MediaModel extends ZuiwantModel {
         //articleNum = jsonObject.getInt("article_count");
         mediaName = jsonObject.getString("media_name");
         mediaIntro = jsonObject.getString("media_intro");
+        mediaAvatar = jsonObject.getString("media_avatar");
     }
 }

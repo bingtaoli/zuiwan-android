@@ -20,6 +20,7 @@ public class TopicModel extends ZuiwantModel implements Parcelable {
     public String topicName;
     public int articleNum;
     public String topicIntro;
+    public String topicImg;
 
     public TopicModel(){}
 
@@ -55,6 +56,7 @@ public class TopicModel extends ZuiwantModel implements Parcelable {
         articleNum = jsonObject.getInt("article_count");
         topicName = jsonObject.getString("topic_name");
         topicIntro = jsonObject.getString("topic_intro");
+        topicImg = jsonObject.getString("topic_img");
     }
 
     @Override
