@@ -23,7 +23,6 @@ public class MediaModel extends ZuiwantModel {
     @Override
     public void parse(JSONObject jsonObject) throws JSONException {
         id = jsonObject.getInt("id");
-        //articleNum = jsonObject.getInt("article_count");
         mediaName = jsonObject.getString("media_name");
         mediaIntro = jsonObject.getString("media_intro");
         mediaAvatar = jsonObject.getString("media_avatar");

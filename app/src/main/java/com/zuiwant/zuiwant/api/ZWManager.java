@@ -3,6 +3,7 @@ package com.zuiwant.zuiwant.api;
 import android.content.Context;
 
 import com.loopj.android.http.AsyncHttpClient;
+import com.zuiwant.zuiwant.model.ArticleModel;
 import com.zuiwant.zuiwant.model.MediaModel;
 import com.zuiwant.zuiwant.model.PersistenceHelper;
 import com.zuiwant.zuiwant.model.TopicModel;
@@ -17,7 +18,7 @@ public class ZWManager {
 
     private static String getTopicsUrl = "http://zuiwant.com/zuiwan-backend/index.php/topic/get_topic";
     private static String getMediasUrl = "http://zuiwant.com/zuiwan-backend/index.php/media/get_media";
-    private static String getRecommendsUrl = "http://zuiwant.com/zuiwan-backend/index.php/article/get_recommend";
+    private static String getRecommendsUrl = "http://zuiwant.com/zuiwan-backend/index.php/article/get_recommend_articles";
 
     /**
      * @param ctx
@@ -54,21 +55,20 @@ public class ZWManager {
                 new WrappedJsonHttpResponseHandler<MediaModel>(ctx, MediaModel.class, key, handler));
     }
 
-
-//    public static void getRecommends(Context ctx, boolean refresh,
-//                                 final HttpRequestHandler<ArrayList<TopicModel>> handler){
-//        String key = "get_recommend";
-//        if (!refresh) {
-//            //尝试从缓存中加载
-//            ArrayList<TopicModel> topics = PersistenceHelper.loadModelList(ctx, key);
-//            if (topics != null && topics.size() > 0) {
-//                SafeHandler.onSuccess(handler, topics);
-//                return;
-//            }
-//        }
-//        new AsyncHttpClient().get(ctx, getRecommendsUrl,
-//                new WrappedJsonHttpResponseHandler<TopicModel>(ctx, TopicModel.class, key, handler));
-//    }
+    public static void getRecommends(Context ctx, boolean refresh,
+                                 final HttpRequestHandler<ArrayList<ArticleModel>> handler){
+        String key = "get_recommend";
+        if (!refresh) {
+            //尝试从缓存中加载
+            ArrayList<ArticleModel> recommends = PersistenceHelper.loadModelList(ctx, key);
+            if (recommends != null && recommends.size() > 0) {
+                SafeHandler.onSuccess(handler, recommends);
+                return;
+            }
+        }
+        new AsyncHttpClient().get(ctx, getRecommendsUrl,
+                new WrappedJsonHttpResponseHandler<ArticleModel>(ctx, ArticleModel.class, key, handler));
+    }
 
 
 
