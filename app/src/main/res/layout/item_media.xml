@@ -20,7 +20,6 @@
             android:layout_height="50dp"
             android:padding="0.1dp"
             fresco:actualImageScaleType="centerCrop"
-            fresco:placeholderImage="@drawable/zw_logo"
             fresco:placeholderImageScaleType="centerInside"/>
 
         <RelativeLayout
