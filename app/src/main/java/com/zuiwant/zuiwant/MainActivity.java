@@ -9,6 +9,7 @@ import android.view.MenuItem;
 import android.widget.TabHost;
 
 import com.facebook.drawee.backends.pipeline.Fresco;
+import com.zuiwant.zuiwant.ui.fragment.AccountFragment;
 import com.zuiwant.zuiwant.ui.fragment.MediaFragment;
 import com.zuiwant.zuiwant.ui.fragment.TopicFragment;
 import com.zuiwant.zuiwant.ui.widget.ChangeColorIconWithText;
@@ -62,9 +63,9 @@ public class MainActivity extends AppCompatActivity implements TabHost.OnTabChan
         mTabHost.setup(this, getSupportFragmentManager(), R.id.tab_content);
         mTabHost.getTabWidget().setDividerDrawable(null);
 
-        TabHost.TabSpec[] tabSpecs = new TabHost.TabSpec[3];
-        String[] texts = new String[3];
-        ChangeColorIconWithText[] tabviews = new ChangeColorIconWithText[3];
+        TabHost.TabSpec[] tabSpecs = new TabHost.TabSpec[4];
+        String[] texts = new String[4];
+        ChangeColorIconWithText[] tabviews = new ChangeColorIconWithText[4];
 
         Bundle bundle = new Bundle();
         bundle.putInt("type", ViewPagerFragment.TypeViewPager_Aggregation);
@@ -85,6 +86,12 @@ public class MainActivity extends AppCompatActivity implements TabHost.OnTabChan
         tabSpecs[2] = mTabHost.newTabSpec(texts[2]).setIndicator(tabviews[2]);
         mTabHost.addTab(tabSpecs[2], MediaFragment.class, null);
         mTabIndicators.add(tabviews[2]);
+
+        texts[3] = getString(R.string.title_activity_main_account);
+        tabviews[3] = getTabView(R.layout.item_tab_account);
+        tabSpecs[3] = mTabHost.newTabSpec(texts[3]).setIndicator(tabviews[3]);
+        mTabHost.addTab(tabSpecs[3], AccountFragment.class, null);
+        mTabIndicators.add(tabviews[3]);
 
         mTabHost.setOnTabChangedListener(this);
         tabviews[0].setIconAlpha(1.0f);
