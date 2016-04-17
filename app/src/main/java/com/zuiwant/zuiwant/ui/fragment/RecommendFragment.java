@@ -4,8 +4,12 @@ import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 
 import com.zuiwant.zuiwant.R;
 import com.zuiwant.zuiwant.api.HttpRequestHandler;
@@ -22,6 +26,7 @@ import java.util.ArrayList;
 public class RecommendFragment extends BaseFragment implements HttpRequestHandler<ArrayList<ArticleModel>> {
 
     RecyclerView mRecyclerView;
+    RecyclerView.LayoutManager mLayoutManager;
     ArticleAdapter mArticleAdapter;
     SwipeRefreshLayout mSwipeLayout;
     private ArrayList<ArticleModel> recommends = new ArrayList<>();
@@ -33,17 +38,30 @@ public class RecommendFragment extends BaseFragment implements HttpRequestHandle
         return R.layout.fragment_recommends;
     }
 
+    /**
+     * 两栏布局,所以不使用基类的onCreateView :(
+     * @param inflater
+     * @param container
+     * @param savedInstanceState
+     * @return
+     */
     @Override
-    public void initView(){
-        mRecyclerView = (RecyclerView) rootView.findViewById(R.id.list_recommends);
-        mSwipeLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.swipe_container);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        RelativeLayout layout = (RelativeLayout) inflater.inflate(setRootViewResId(), container, false);
+
+        mLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
+        mRecyclerView = (RecyclerView) layout.findViewById(R.id.list_recommends);
+        mRecyclerView.setLayoutManager(mLayoutManager);
+
+        mArticleAdapter = new ArticleAdapter(getActivity(), recommends);
+        mRecyclerView.setAdapter(mArticleAdapter);
+
+        mSwipeLayout = (SwipeRefreshLayout) layout.findViewById(R.id.swipe_container);
+        return layout;
     }
 
     @Override
     public void setViewStatus(){
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        mArticleAdapter = new ArticleAdapter(getActivity(), recommends);
-        mRecyclerView.setAdapter(mArticleAdapter);
 
         mArticleAdapter.setOnItemClickListener(new BaseRecycleAdapter.OnItemClickListener() {
             @Override
