@@ -1,5 +1,6 @@
 package com.zuiwant.zuiwant.ui.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -15,6 +16,7 @@ import com.zuiwant.zuiwant.R;
 import com.zuiwant.zuiwant.api.HttpRequestHandler;
 import com.zuiwant.zuiwant.api.ZWManager;
 import com.zuiwant.zuiwant.model.ArticleModel;
+import com.zuiwant.zuiwant.ui.activity.ArticleActivity;
 import com.zuiwant.zuiwant.ui.adapter.ArticleAdapter;
 import com.zuiwant.zuiwant.ui.adapter.BaseRecycleAdapter;
 
@@ -23,7 +25,7 @@ import java.util.ArrayList;
 /**
  * Created by matthew on 16/4/17.
  */
-public class RecommendFragment extends BaseFragment implements HttpRequestHandler<ArrayList<ArticleModel>> {
+public class RecommendArticlesFragment extends BaseFragment implements HttpRequestHandler<ArrayList<ArticleModel>> {
 
     RecyclerView mRecyclerView;
     RecyclerView.LayoutManager mLayoutManager;
@@ -67,8 +69,9 @@ public class RecommendFragment extends BaseFragment implements HttpRequestHandle
             @Override
             public void onItemClick(View view, int position) {
                 //打开一个新的activity
-                //暂时只记录log
-                Log.d("lee", "one item is clicked");
+                Intent intent = new Intent(getActivity(), ArticleActivity.class);
+                Log.d("lee", "start article activity");
+                getActivity().startActivity(intent);
             }
         });
         mSwipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {

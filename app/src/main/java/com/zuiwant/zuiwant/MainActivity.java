@@ -11,7 +11,7 @@ import android.widget.TabHost;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.zuiwant.zuiwant.ui.fragment.AccountFragment;
 import com.zuiwant.zuiwant.ui.fragment.MediaFragment;
-import com.zuiwant.zuiwant.ui.fragment.RecommendFragment;
+import com.zuiwant.zuiwant.ui.fragment.RecommendArticlesFragment;
 import com.zuiwant.zuiwant.ui.fragment.TopicFragment;
 import com.zuiwant.zuiwant.ui.widget.ChangeColorIconWithText;
 import com.zuiwant.zuiwant.ui.fragment.ViewPagerFragment;
@@ -73,7 +73,7 @@ public class MainActivity extends AppCompatActivity implements TabHost.OnTabChan
         texts[0] = getString(R.string.title_activity_main_recommend);
         tabviews[0] = getTabView(R.layout.item_tab_recommend);
         tabSpecs[0] = mTabHost.newTabSpec(texts[0]).setIndicator(tabviews[0]);
-        mTabHost.addTab(tabSpecs[0], RecommendFragment.class, bundle);
+        mTabHost.addTab(tabSpecs[0], RecommendArticlesFragment.class, bundle);
         mTabIndicators.add(tabviews[0]);
 
         texts[1] = getString(R.string.title_activity_main_topic);
