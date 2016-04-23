@@ -3,6 +3,7 @@ package com.zuiwant.zuiwant.api;
 import android.content.Context;
 
 import com.loopj.android.http.AsyncHttpClient;
+import com.zuiwant.zuiwant.model.ArticleContentModel;
 import com.zuiwant.zuiwant.model.ArticleModel;
 import com.zuiwant.zuiwant.model.MediaModel;
 import com.zuiwant.zuiwant.model.PersistenceHelper;
@@ -16,9 +17,10 @@ import java.util.ArrayList;
  */
 public class ZWManager {
 
-    private static String getTopicsUrl = "http://zuiwant.com/zuiwan-backend/index.php/topic/get_topic";
-    private static String getMediasUrl = "http://zuiwant.com/zuiwan-backend/index.php/media/get_media";
-    private static String getRecommendsUrl = "http://zuiwant.com/zuiwan-backend/index.php/article/get_recommend_articles";
+    private static String zuiwant = "http://zuiwant.com/zuiwan-backend/index.php/";
+    private static String getTopicsUrl =  zuiwant + "topic/get_topic";
+    private static String getMediasUrl =  zuiwant + "media/get_media";
+    private static String getRecommendsUrl = zuiwant + "article/get_recommend_articles";
 
     /**
      * @param ctx
@@ -70,6 +72,21 @@ public class ZWManager {
                 new WrappedJsonHttpResponseHandler<ArticleModel>(ctx, ArticleModel.class, key, handler));
     }
 
+    public static void getOneArticle(Context ctx, int articleId, boolean refresh,
+                                     final HttpRequestHandler<ArrayList<ArticleContentModel>> handler){
+        String key = "get_article" + articleId;
+        String getOneArticleUrl = zuiwant + "article/get_one_article?id=" + articleId;
+        if (!refresh) {
+            //尝试从缓存中加载
+            ArrayList<ArticleContentModel> recommends = PersistenceHelper.loadModelList(ctx, key);
+            if (recommends != null && recommends.size() > 0) {
+                SafeHandler.onSuccess(handler, recommends);
+                return;
+            }
+        }
+        new AsyncHttpClient().get(ctx, getOneArticleUrl,
+                new WrappedJsonHttpResponseHandler<ArticleContentModel>(ctx, ArticleContentModel.class, key, handler));
+    }
 
 
 }

@@ -17,15 +17,15 @@ import java.util.List;
 /**
  * Created by matthew on 16/4/17.
  */
-public class ArticleAdapter extends BaseRecycleAdapter {
+public class ArticlesAdapter extends BaseRecycleAdapter {
 
     private List<ArticleModel> articles = new ArrayList<>();
 
-    public  ArticleAdapter(Context context){
+    public ArticlesAdapter(Context context){
         super(context);
     }
 
-    public  ArticleAdapter(Context context, List<ArticleModel> articles){
+    public ArticlesAdapter(Context context, List<ArticleModel> articles){
         super(context);
         this.articles = articles;
     }

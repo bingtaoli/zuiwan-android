@@ -3,7 +3,6 @@ package com.zuiwant.zuiwant.ui.fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.Log;
@@ -17,7 +16,7 @@ import com.zuiwant.zuiwant.api.HttpRequestHandler;
 import com.zuiwant.zuiwant.api.ZWManager;
 import com.zuiwant.zuiwant.model.ArticleModel;
 import com.zuiwant.zuiwant.ui.activity.ArticleActivity;
-import com.zuiwant.zuiwant.ui.adapter.ArticleAdapter;
+import com.zuiwant.zuiwant.ui.adapter.ArticlesAdapter;
 import com.zuiwant.zuiwant.ui.adapter.BaseRecycleAdapter;
 
 import java.util.ArrayList;
@@ -29,7 +28,7 @@ public class RecommendArticlesFragment extends BaseFragment implements HttpReque
 
     RecyclerView mRecyclerView;
     RecyclerView.LayoutManager mLayoutManager;
-    ArticleAdapter mArticleAdapter;
+    ArticlesAdapter mArticleAdapter;
     SwipeRefreshLayout mSwipeLayout;
     private ArrayList<ArticleModel> recommends = new ArrayList<>();
 
@@ -55,7 +54,7 @@ public class RecommendArticlesFragment extends BaseFragment implements HttpReque
         mRecyclerView = (RecyclerView) layout.findViewById(R.id.list_recommends);
         mRecyclerView.setLayoutManager(mLayoutManager);
 
-        mArticleAdapter = new ArticleAdapter(getActivity(), recommends);
+        mArticleAdapter = new ArticlesAdapter(getActivity(), recommends);
         mRecyclerView.setAdapter(mArticleAdapter);
 
         mSwipeLayout = (SwipeRefreshLayout) layout.findViewById(R.id.swipe_container);
@@ -71,6 +70,7 @@ public class RecommendArticlesFragment extends BaseFragment implements HttpReque
                 //打开一个新的activity
                 Intent intent = new Intent(getActivity(), ArticleActivity.class);
                 Log.d("lee", "start article activity");
+                intent.putExtra("article", recommends.get(position));
                 getActivity().startActivity(intent);
             }
         });
@@ -100,6 +100,10 @@ public class RecommendArticlesFragment extends BaseFragment implements HttpReque
 
     @Override
     public void onSuccess(ArrayList<ArticleModel> data) {
+        /**
+         * for recommends.get(position)
+         */
+        recommends = data;
         onSuccess(data, 1, 1);
     }
 
