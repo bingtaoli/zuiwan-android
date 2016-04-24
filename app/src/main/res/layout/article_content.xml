@@ -3,11 +3,15 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.zuiwant.zuiwant.widget.RichTextView
-        android:id="@+id/text_content"
-        android:layout_margin="16dp"
+    <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="帖子内容"/>
+        android:layout_height="match_parent"
+        android:scrollbars="vertical">
+
+        <WebView
+            android:id="@+id/webview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"></WebView>
+    </android.support.v4.widget.NestedScrollView>
 
 </LinearLayout>
