@@ -26,11 +26,12 @@ import java.util.ArrayList;
  */
 public class RecommendArticlesFragment extends BaseFragment implements HttpRequestHandler<ArrayList<ArticleModel>> {
 
+    private static final int PRELOAD_SIZE = 4; //已经加载
     RecyclerView mRecyclerView;
-    RecyclerView.LayoutManager mLayoutManager;
     ArticlesAdapter mArticleAdapter;
     SwipeRefreshLayout mSwipeLayout;
-    private ArrayList<ArticleModel> recommends = new ArrayList<>();
+    private int mPage = 1;
+    private boolean mIsFirstTimeTouchBottom = true;
 
     boolean mIsLoading; //是否在加载
 
@@ -50,11 +51,12 @@ public class RecommendArticlesFragment extends BaseFragment implements HttpReque
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         RelativeLayout layout = (RelativeLayout) inflater.inflate(setRootViewResId(), container, false);
 
-        mLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
+        final StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
         mRecyclerView = (RecyclerView) layout.findViewById(R.id.list_recommends);
-        mRecyclerView.setLayoutManager(mLayoutManager);
+        mRecyclerView.setLayoutManager(layoutManager);
+        mRecyclerView.addOnScrollListener(getOnBottomListener(layoutManager));
 
-        mArticleAdapter = new ArticlesAdapter(getActivity(), recommends);
+        mArticleAdapter = new ArticlesAdapter(getActivity());
         mRecyclerView.setAdapter(mArticleAdapter);
 
         mSwipeLayout = (SwipeRefreshLayout) layout.findViewById(R.id.swipe_container);
@@ -70,7 +72,7 @@ public class RecommendArticlesFragment extends BaseFragment implements HttpReque
                 //打开一个新的activity
                 Intent intent = new Intent(getActivity(), ArticleActivity.class);
                 Log.d("lee", "start article activity");
-                intent.putExtra("article", recommends.get(position));
+                intent.putExtra("article", mArticleAdapter.getArticles().get(position));
                 getActivity().startActivity(intent);
             }
         });
@@ -78,7 +80,7 @@ public class RecommendArticlesFragment extends BaseFragment implements HttpReque
             @Override
             public void onRefresh() {
                 Log.d("lee", "on refreshing");
-                requestRecommends(true);
+                requestRecommends(true, mPage);
             }
         });
     }
@@ -87,32 +89,30 @@ public class RecommendArticlesFragment extends BaseFragment implements HttpReque
     public void onActivityCreated(Bundle savedInstanceState){
         super.onActivityCreated(savedInstanceState);
         mSwipeLayout.setRefreshing(true);
-        requestRecommends(false);
+        requestRecommends(false, mPage);
     }
 
-    private void requestRecommends(boolean refresh){
+    private void requestRecommends(boolean refresh, int page){
         if (mIsLoading){
             return ;
         }
         mIsLoading = true;
-        ZWManager.getRecommends(getActivity(), refresh, this);
+        ZWManager.getRecommends(getActivity(), refresh, page, this);
     }
 
     @Override
     public void onSuccess(ArrayList<ArticleModel> data) {
         /**
-         * for recommends.get(position)
+         * recommend不用add,因为在adapter中的articles是对recommend的引用
+         * 如果recommend也加一遍,则每次更新都会增加两次!
          */
-        recommends = data;
-        onSuccess(data, 1, 1);
+        onSuccess(data, mPage, mPage);
     }
 
     @Override
     public void onSuccess(ArrayList<ArticleModel> data, int totalPages, int currentPage) {
         mSwipeLayout.setRefreshing(false);
         mIsLoading = false;
-
-        //NOTE 先不实现分页
 
         if (data.size() == 0) return;
 
@@ -121,6 +121,27 @@ public class RecommendArticlesFragment extends BaseFragment implements HttpReque
 
     @Override
     public void onFailure(String error) {
-        //
+        mSwipeLayout.setRefreshing(false);
+    }
+
+    RecyclerView.OnScrollListener getOnBottomListener(final StaggeredGridLayoutManager layoutManager) {
+        return new RecyclerView.OnScrollListener() {
+            @Override public void onScrolled(RecyclerView rv, int dx, int dy) {
+                //最后一个可见的item位置 >= 总数目 - 提前加载数目
+                boolean isBottom = layoutManager.findLastCompletelyVisibleItemPositions(new int[2])[1]
+                        >= mArticleAdapter.getItemCount() - PRELOAD_SIZE;
+                if (!mSwipeLayout.isRefreshing() && isBottom) {
+                    if (!mIsFirstTimeTouchBottom) {
+                        mSwipeLayout.setRefreshing(true);
+                        mPage += 1;
+                        Log.d("lee", "request page: " + mPage);
+                        requestRecommends(true, mPage);
+                    }
+                    else {
+                        mIsFirstTimeTouchBottom = false;
+                    }
+                }
+            }
+        };
     }
 }

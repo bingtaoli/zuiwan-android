@@ -3,6 +3,7 @@ package com.zuiwant.zuiwant.ui.adapter;
 import android.content.Context;
 import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -21,13 +22,12 @@ public class ArticlesAdapter extends BaseRecycleAdapter {
 
     private List<ArticleModel> articles = new ArrayList<>();
 
-    public ArticlesAdapter(Context context){
-        super(context);
+    public List<ArticleModel> getArticles(){
+        return articles;
     }
 
-    public ArticlesAdapter(Context context, List<ArticleModel> articles){
+    public ArticlesAdapter(Context context){
         super(context);
-        this.articles = articles;
     }
 
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
@@ -75,10 +75,14 @@ public class ArticlesAdapter extends BaseRecycleAdapter {
     }
 
     public void insertAtBack(ArrayList<ArticleModel> data, boolean merge) {
-        if (merge)
+        if (merge){
             articles.addAll(data);
-        else
+            Log.d("lee", "in adapter articles add data, now length is: " + articles.size());
+        }
+        else {
             articles = data;
+            Log.d("lee", "in adapter articles equals data, data is: " + articles.size());
+        }
         //通知内容view已经更新
         notifyDataSetChanged();
     }

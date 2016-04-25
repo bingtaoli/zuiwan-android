@@ -40,9 +40,15 @@ public class ArticleContentModel extends ZuiwantModel  {
                 "<style type=\"text/css\">" +
                 "img {" +
                     "max-width: 99% !important;" +
+                    "height: auto!important;" +
                 "}" +
                 "p {" +
                     "word-break: break-all !important;" +
+                    "max-width: 100% !important;" +
+                "}" +
+                ".article .article-content .content img {" +
+                    "max-width: 99% !important;" +
+                    "height: auto!important;" +
                 "}" +
                 "</style>" +
                 "</head>";

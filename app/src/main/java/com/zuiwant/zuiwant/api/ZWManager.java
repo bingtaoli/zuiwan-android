@@ -20,7 +20,6 @@ public class ZWManager {
     private static String zuiwant = "http://zuiwant.com/zuiwan-backend/index.php/";
     private static String getTopicsUrl =  zuiwant + "topic/get_topic";
     private static String getMediasUrl =  zuiwant + "media/get_media";
-    private static String getRecommendsUrl = zuiwant + "article/get_recommend_articles";
 
     /**
      * @param ctx
@@ -57,9 +56,9 @@ public class ZWManager {
                 new WrappedJsonHttpResponseHandler<MediaModel>(ctx, MediaModel.class, key, handler));
     }
 
-    public static void getRecommends(Context ctx, boolean refresh,
+    public static void getRecommends(Context ctx, boolean refresh, int page,
                                  final HttpRequestHandler<ArrayList<ArticleModel>> handler){
-        String key = "get_recommend";
+        String key = "get_recommend_page_" + page;
         if (!refresh) {
             //尝试从缓存中加载
             ArrayList<ArticleModel> recommends = PersistenceHelper.loadModelList(ctx, key);
@@ -68,6 +67,7 @@ public class ZWManager {
                 return;
             }
         }
+        String getRecommendsUrl = zuiwant + "article/get_recommend_articles?page=" + page;
         new AsyncHttpClient().get(ctx, getRecommendsUrl,
                 new WrappedJsonHttpResponseHandler<ArticleModel>(ctx, ArticleModel.class, key, handler));
     }
