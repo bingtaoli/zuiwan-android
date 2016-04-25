@@ -30,7 +30,7 @@ public class RecommendArticlesFragment extends BaseFragment implements HttpReque
     RecyclerView mRecyclerView;
     ArticlesAdapter mArticleAdapter;
     SwipeRefreshLayout mSwipeLayout;
-    final StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);;
+
     private int mPage = 1;
     private boolean mIsFirstTimeTouchBottom = true;
 
@@ -46,9 +46,11 @@ public class RecommendArticlesFragment extends BaseFragment implements HttpReque
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         RelativeLayout layout = (RelativeLayout) inflater.inflate(R.layout.fragment_recommends, container, false);
-
+        final StaggeredGridLayoutManager layoutManager =
+                new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
         mRecyclerView = (RecyclerView) layout.findViewById(R.id.list_recommends);
         mRecyclerView.setLayoutManager(layoutManager);
+        mRecyclerView.addOnScrollListener(getOnBottomListener(layoutManager));
 
         mArticleAdapter = new ArticlesAdapter(getActivity());
         mRecyclerView.setAdapter(mArticleAdapter);
@@ -58,7 +60,7 @@ public class RecommendArticlesFragment extends BaseFragment implements HttpReque
     }
 
     @Override
-    public void setViewStatus(){
+    public void setViewStatus() {
 
         mArticleAdapter.setOnItemClickListener(new BaseRecycleAdapter.OnItemClickListener() {
             @Override
@@ -77,7 +79,6 @@ public class RecommendArticlesFragment extends BaseFragment implements HttpReque
                 requestRecommends(true, mPage);
             }
         });
-        mRecyclerView.addOnScrollListener(getOnBottomListener(layoutManager));
     }
 
     @Override
