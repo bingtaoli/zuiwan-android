@@ -25,11 +25,6 @@ public class TopicsAdapter extends BaseRecycleAdapter {
         super(context);
     }
 
-    public TopicsAdapter(Context context, List<TopicModel> topics) {
-        super(context);
-        this.topics = topics;
-    }
-
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
         return new TopicViewHolder(inflater.inflate(R.layout.item_topic, viewGroup, false));
     }

@@ -21,13 +21,11 @@ import java.util.ArrayList;
 /**
  * Created by matthew on 16/4/15.
  */
-public class MediaFragment extends BaseFragment implements HttpRequestHandler<ArrayList<MediaModel>> {
+public class MediasFragment extends BaseFragment implements HttpRequestHandler<ArrayList<MediaModel>> {
 
     RecyclerView mRecyclerView;
-    RecyclerView.LayoutManager mLayoutManager;
     MediasAdapter mMediasAdapter;
     SwipeRefreshLayout mSwipeLayout;
-    private ArrayList<MediaModel> medias = new ArrayList<>();
 
     boolean mIsLoading;
 
@@ -45,7 +43,7 @@ public class MediaFragment extends BaseFragment implements HttpRequestHandler<Ar
     @Override
     public void setViewStatus(){
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        mMediasAdapter = new MediasAdapter(getActivity(), medias);
+        mMediasAdapter = new MediasAdapter(getActivity());
         mRecyclerView.setAdapter(mMediasAdapter);
 
         mMediasAdapter.setOnItemClickListener(new BaseRecycleAdapter.OnItemClickListener() {
@@ -90,8 +88,6 @@ public class MediaFragment extends BaseFragment implements HttpRequestHandler<Ar
         mSwipeLayout.setRefreshing(false);
         mIsLoading = false;
 
-        //NOTE 先不实现分页
-
         if (data.size() == 0) return;
 
         mMediasAdapter.insertAtBack(data, currentPage != 1);
@@ -99,6 +95,7 @@ public class MediaFragment extends BaseFragment implements HttpRequestHandler<Ar
 
     @Override
     public void onFailure(String error) {
-        //
+        mSwipeLayout.setRefreshing(false);
+        mIsLoading = false;
     }
 }

@@ -30,15 +30,11 @@ public class RecommendArticlesFragment extends BaseFragment implements HttpReque
     RecyclerView mRecyclerView;
     ArticlesAdapter mArticleAdapter;
     SwipeRefreshLayout mSwipeLayout;
+    final StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);;
     private int mPage = 1;
     private boolean mIsFirstTimeTouchBottom = true;
 
     boolean mIsLoading; //是否在加载
-
-    @Override
-    protected int setRootViewResId() {
-        return R.layout.fragment_recommends;
-    }
 
     /**
      * 两栏布局,所以不使用基类的onCreateView :(
@@ -49,12 +45,10 @@ public class RecommendArticlesFragment extends BaseFragment implements HttpReque
      */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        RelativeLayout layout = (RelativeLayout) inflater.inflate(setRootViewResId(), container, false);
+        RelativeLayout layout = (RelativeLayout) inflater.inflate(R.layout.fragment_recommends, container, false);
 
-        final StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
         mRecyclerView = (RecyclerView) layout.findViewById(R.id.list_recommends);
         mRecyclerView.setLayoutManager(layoutManager);
-        mRecyclerView.addOnScrollListener(getOnBottomListener(layoutManager));
 
         mArticleAdapter = new ArticlesAdapter(getActivity());
         mRecyclerView.setAdapter(mArticleAdapter);
@@ -83,6 +77,7 @@ public class RecommendArticlesFragment extends BaseFragment implements HttpReque
                 requestRecommends(true, mPage);
             }
         });
+        mRecyclerView.addOnScrollListener(getOnBottomListener(layoutManager));
     }
 
     @Override
@@ -122,6 +117,7 @@ public class RecommendArticlesFragment extends BaseFragment implements HttpReque
     @Override
     public void onFailure(String error) {
         mSwipeLayout.setRefreshing(false);
+        mIsLoading = false;
     }
 
     RecyclerView.OnScrollListener getOnBottomListener(final StaggeredGridLayoutManager layoutManager) {

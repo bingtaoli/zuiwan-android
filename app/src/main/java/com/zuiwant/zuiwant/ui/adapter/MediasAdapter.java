@@ -26,11 +26,6 @@ public class MediasAdapter extends BaseRecycleAdapter {
         super(context);
     }
 
-    public MediasAdapter(Context context, List<MediaModel> medias) {
-        super(context);
-        this.medias = medias;
-    }
-
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
         View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_media, viewGroup, false);
         return new MediaViewHolder(v);

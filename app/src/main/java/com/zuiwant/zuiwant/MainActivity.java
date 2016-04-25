@@ -10,9 +10,9 @@ import android.widget.TabHost;
 
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.zuiwant.zuiwant.ui.fragment.AccountFragment;
-import com.zuiwant.zuiwant.ui.fragment.MediaFragment;
+import com.zuiwant.zuiwant.ui.fragment.MediasFragment;
 import com.zuiwant.zuiwant.ui.fragment.RecommendArticlesFragment;
-import com.zuiwant.zuiwant.ui.fragment.TopicFragment;
+import com.zuiwant.zuiwant.ui.fragment.TopicsFragment;
 import com.zuiwant.zuiwant.ui.widget.ChangeColorIconWithText;
 import com.zuiwant.zuiwant.ui.fragment.ViewPagerFragment;
 
@@ -79,13 +79,13 @@ public class MainActivity extends AppCompatActivity implements TabHost.OnTabChan
         texts[1] = getString(R.string.title_activity_main_topic);
         tabviews[1] = getTabView(R.layout.item_tab_topic);
         tabSpecs[1] = mTabHost.newTabSpec(texts[1]).setIndicator(tabviews[1]);
-        mTabHost.addTab(tabSpecs[1], TopicFragment.class, null);
+        mTabHost.addTab(tabSpecs[1], TopicsFragment.class, null);
         mTabIndicators.add(tabviews[1]);
 
         texts[2] = getString(R.string.title_activity_main_media);
         tabviews[2] = getTabView(R.layout.item_tab_media);
         tabSpecs[2] = mTabHost.newTabSpec(texts[2]).setIndicator(tabviews[2]);
-        mTabHost.addTab(tabSpecs[2], MediaFragment.class, null);
+        mTabHost.addTab(tabSpecs[2], MediasFragment.class, null);
         mTabIndicators.add(tabviews[2]);
 
         texts[3] = getString(R.string.title_activity_main_account);

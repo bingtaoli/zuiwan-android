@@ -20,12 +20,11 @@ import java.util.ArrayList;
 /**
  * Created by matthew on 16/4/13.
  */
-public class TopicFragment extends BaseFragment implements HttpRequestHandler<ArrayList<TopicModel>> {
+public class TopicsFragment extends BaseFragment implements HttpRequestHandler<ArrayList<TopicModel>> {
 
     RecyclerView mRecyclerView;
     TopicsAdapter mTopicAdapter;
     SwipeRefreshLayout mSwipeLayout;
-    private ArrayList<TopicModel> topics = new ArrayList<>();
 
     boolean mIsLoading; //是否在加载
 
@@ -43,7 +42,7 @@ public class TopicFragment extends BaseFragment implements HttpRequestHandler<Ar
     @Override
     public void setViewStatus(){
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        mTopicAdapter = new TopicsAdapter(getActivity(), topics);
+        mTopicAdapter = new TopicsAdapter(getActivity());
         mRecyclerView.setAdapter(mTopicAdapter);
 
         mTopicAdapter.setOnItemClickListener(new BaseRecycleAdapter.OnItemClickListener() {
@@ -90,8 +89,6 @@ public class TopicFragment extends BaseFragment implements HttpRequestHandler<Ar
         mSwipeLayout.setRefreshing(false);
         mIsLoading = false;
 
-        //NOTE 先不实现分页
-
         if (data.size() == 0) return;
 
         mTopicAdapter.insertAtBack(data, currentPage != 1);
@@ -99,6 +96,7 @@ public class TopicFragment extends BaseFragment implements HttpRequestHandler<Ar
 
     @Override
     public void onFailure(String error) {
-        //
+        mSwipeLayout.setRefreshing(false);
+        mIsLoading = false;
     }
 }
