@@ -9,7 +9,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.RelativeLayout;
+import android.widget.LinearLayout;
 
 import com.zuiwant.zuiwant.R;
 import com.zuiwant.zuiwant.api.HttpRequestHandler;
@@ -22,9 +22,9 @@ import com.zuiwant.zuiwant.ui.adapter.BaseRecycleAdapter;
 import java.util.ArrayList;
 
 /**
- * Created by matthew on 16/4/17.
+ * Created by matthew on 16/4/30.
  */
-public class RecommendArticlesFragment extends BaseFragment implements HttpRequestHandler<ArrayList<ArticleModel>> {
+public class RecommendFragment extends BaseFragment implements HttpRequestHandler<ArrayList<ArticleModel>> {
 
     private static final int PRELOAD_SIZE = 4; //已经加载
     RecyclerView mRecyclerView;
@@ -45,7 +45,8 @@ public class RecommendArticlesFragment extends BaseFragment implements HttpReque
      */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        RelativeLayout layout = (RelativeLayout) inflater.inflate(R.layout.fragment_recommends, container, false);
+        LinearLayout layout = (LinearLayout) inflater.inflate(R.layout.fragment_recommends_articles, container, false);
+
         final StaggeredGridLayoutManager layoutManager =
                 new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
         mRecyclerView = (RecyclerView) layout.findViewById(R.id.list_recommends);
@@ -53,9 +54,11 @@ public class RecommendArticlesFragment extends BaseFragment implements HttpReque
         mRecyclerView.addOnScrollListener(getOnBottomListener(layoutManager));
 
         mArticleAdapter = new ArticlesAdapter(getActivity());
+
         mRecyclerView.setAdapter(mArticleAdapter);
 
         mSwipeLayout = (SwipeRefreshLayout) layout.findViewById(R.id.swipe_container);
+
         return layout;
     }
 
@@ -96,31 +99,6 @@ public class RecommendArticlesFragment extends BaseFragment implements HttpReque
         ZWManager.getRecommends(getActivity(), refresh, page, this);
     }
 
-    @Override
-    public void onSuccess(ArrayList<ArticleModel> data) {
-        /**
-         * recommend不用add,因为在adapter中的articles是对recommend的引用
-         * 如果recommend也加一遍,则每次更新都会增加两次!
-         */
-        onSuccess(data, mPage, mPage);
-    }
-
-    @Override
-    public void onSuccess(ArrayList<ArticleModel> data, int totalPages, int currentPage) {
-        mSwipeLayout.setRefreshing(false);
-        mIsLoading = false;
-
-        if (data.size() == 0) return;
-
-        mArticleAdapter.insertAtBack(data, currentPage != 1);
-    }
-
-    @Override
-    public void onFailure(String error) {
-        mSwipeLayout.setRefreshing(false);
-        mIsLoading = false;
-    }
-
     RecyclerView.OnScrollListener getOnBottomListener(final StaggeredGridLayoutManager layoutManager) {
         return new RecyclerView.OnScrollListener() {
             @Override public void onScrolled(RecyclerView rv, int dx, int dy) {
@@ -141,4 +119,39 @@ public class RecommendArticlesFragment extends BaseFragment implements HttpReque
             }
         };
     }
+
+    @Override
+    public void onSuccess(ArrayList<ArticleModel> data) {
+        /**
+         * recommend不用add,因为在adapter中的articles是对recommend的引用
+         * 如果recommend也加一遍,则每次更新都会增加两次!
+         */
+        onSuccess(data, mPage, mPage);
+    }
+
+    @Override
+    public void onSuccess(ArrayList<ArticleModel> data, int totalPages, int currentPage) {
+        mSwipeLayout.setRefreshing(false);
+        mIsLoading = false;
+
+        if (data.size() == 0) return;
+
+        mArticleAdapter.insertAtBack(data, currentPage != 1);
+
+        //update top articles
+        if (data.size() > 3){
+            // TODO 现在每次刷新,都会导致header的articles不一样,说明page还是有问题
+            Log.d("lee update top articles", "yes");
+            mArticleAdapter.banner.setTopEntities(data.subList(0, 3));
+        }
+
+        mArticleAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onFailure(String error) {
+        mSwipeLayout.setRefreshing(false);
+        mIsLoading = false;
+    }
+
 }

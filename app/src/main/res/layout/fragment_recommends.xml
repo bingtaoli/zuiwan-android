@@ -1,19 +1,22 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    >
 
-    <android.support.v4.widget.SwipeRefreshLayout
-        android:id="@+id/swipe_container"
+    <fragment
+        android:id="@+id/banner_fragment"
+        android:name="com.zuiwant.zuiwant.ui.fragment.BannerFragment"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="180dp">
+    </fragment>
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/list_recommends"
-            android:layout_width="match_parent"
-            android:layout_height="fill_parent"
-            android:layout_marginLeft="8dp"
-            android:layout_marginRight="8dp" />
+    <fragment
+        android:id="@+id/articles_fragment"
+        android:name="com.zuiwant.zuiwant.ui.fragment.RecommendFragment"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+    </fragment>
 
-    </android.support.v4.widget.SwipeRefreshLayout>
-
-</RelativeLayout>
+</LinearLayout>
