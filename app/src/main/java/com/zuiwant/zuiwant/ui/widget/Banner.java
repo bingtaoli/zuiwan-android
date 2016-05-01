@@ -27,12 +27,14 @@ import java.util.List;
  */
 public class Banner extends FrameLayout implements View.OnClickListener {
     private List<ArticleModel> topRecommendArticles;
+    private int topRecommendArticlesSize;
     private ImageLoader mImageLoader;
     private DisplayImageOptions options;
     private List<View> views;
     private Context context;
     private ViewPager vp;
     private boolean isAutoPlay;
+    private boolean isRunning = false;
     private int currentItem;
     private int delayTime;
     private LinearLayout ll_dot;
@@ -83,6 +85,7 @@ public class Banner extends FrameLayout implements View.OnClickListener {
         ll_dot.removeAllViews();
 
         int len = topRecommendArticles.size();
+        topRecommendArticlesSize = len;
         for (int i = 0; i < len; i++) {
             ImageView iv_dot = new ImageView(context);
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
@@ -117,30 +120,39 @@ public class Banner extends FrameLayout implements View.OnClickListener {
         }
         vp.setAdapter(new MyPagerAdapter());
         vp.setFocusable(true);
-        vp.setCurrentItem(0);
-        currentItem = 0;
+        vp.setCurrentItem(1);
+        currentItem = 1;
         vp.addOnPageChangeListener(new MyOnPageChangeListener());
         startPlay();
     }
 
     private void startPlay() {
         isAutoPlay = true;
-        handler.postDelayed(task, delayTime);
+        if (!isRunning){
+            handler.postDelayed(task, delayTime);
+            isRunning = true;
+        }
     }
 
     private final Runnable task = new Runnable() {
 
         @Override
         public void run() {
-            currentItem = vp.getCurrentItem();
-            if (currentItem == topRecommendArticles.size() - 1){
-                //到头了,回到开始
-                currentItem = 0;
+            /**
+             * NOTE 有个疑问,使用topRecommendArticles.size()总是会触发concurrent modify的问题!!!!
+             */
+            if (isAutoPlay) {
+                currentItem = currentItem % (topRecommendArticlesSize + 1) + 1;
+                if (currentItem == 1) {
+                    vp.setCurrentItem(currentItem, false);
+                    handler.post(task);
+                } else {
+                    vp.setCurrentItem(currentItem);
+                    handler.postDelayed(task, delayTime);
+                }
             } else {
-                currentItem++;
+                handler.postDelayed(task, delayTime);
             }
-            vp.setCurrentItem(currentItem);
-            handler.postDelayed(task, delayTime);
         }
     };
 
@@ -178,13 +190,26 @@ public class Banner extends FrameLayout implements View.OnClickListener {
         @Override
         public void onPageScrollStateChanged(int arg0) {
             switch (arg0) {
-                //Indicates that the pager is currently being dragged by the user
+                //pager处于正在拖拽中
                 case ViewPager.SCROLL_STATE_DRAGGING:
-                    //先取消
-                    handler.removeCallbacks(task);
-                    handler.postDelayed(task, delayTime);
+                    isAutoPlay = false;
+                    //handler.removeCallbacks(task);
                     break;
-                default:
+                //SCROLL_STATE_SETTLING： pager正在自动沉降，相当于松手后，pager恢复到一个完整pager的过程
+                case ViewPager.SCROLL_STATE_SETTLING:
+                    Log.d("lee", "SCROLL_STATE_SETTLING");
+                    isAutoPlay = true;
+                    break;
+                //SCROLL_STATE_IDLE pager处于空闲状态
+                case ViewPager.SCROLL_STATE_IDLE:
+                    Log.d("lee", "SCROLL_STATE_IDLE");
+                    if (vp.getCurrentItem() == 0) {
+                        vp.setCurrentItem(topRecommendArticlesSize, false);
+                    } else if (vp.getCurrentItem() == topRecommendArticlesSize + 1) {
+                        vp.setCurrentItem(1, false);
+                    }
+                    currentItem = vp.getCurrentItem();
+                    isAutoPlay = true;
                     break;
             }
         }
@@ -203,12 +228,14 @@ public class Banner extends FrameLayout implements View.OnClickListener {
         /**
          * This method will be invoked when a new page becomes selected.
          * @param arg0
+         *
          */
         @Override
         public void onPageSelected(int arg0) {
-            Log.d("lee on page Selected", "" + arg0);
+            Log.d("lee", "on page selected " + arg0);
+            // NOTE 0    1, 2, 3    4
             for (int i = 0; i < iv_dots.size(); i++) {
-                if (i == arg0) {
+                if (i == arg0 - 1) {
                     iv_dots.get(i).setImageResource(R.drawable.dot_focus);
                 } else {
                     iv_dots.get(i).setImageResource(R.drawable.dot_blur);

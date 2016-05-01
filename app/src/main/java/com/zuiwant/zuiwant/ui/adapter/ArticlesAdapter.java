@@ -27,6 +27,7 @@ public class ArticlesAdapter extends BaseRecycleAdapter {
 
     private List<ArticleModel> articles = new ArrayList<>();
     public Banner banner = null;
+    private boolean hasGotTopArticles = false;
 
     public List<ArticleModel> getArticles(){
         return articles;
@@ -64,9 +65,10 @@ public class ArticlesAdapter extends BaseRecycleAdapter {
                 articleViewHolder.ivCover.setImageURI(Uri.parse(article.articleImg));
             }
         } else if (viewHolder instanceof VHHeader){
-            if (articles.size() > 2){
+            if (!hasGotTopArticles  && articles.size() > 2){
                 Log.d("lee update top articles", "yes");
                 banner.setTopEntities(articles.subList(0, 3));
+                hasGotTopArticles = true;
             }
             StaggeredGridLayoutManager.LayoutParams layoutParams = (StaggeredGridLayoutManager.LayoutParams) viewHolder.itemView.getLayoutParams();
             layoutParams.setFullSpan(true);

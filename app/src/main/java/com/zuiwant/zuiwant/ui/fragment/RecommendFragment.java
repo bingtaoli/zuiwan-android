@@ -71,7 +71,8 @@ public class RecommendFragment extends BaseFragment implements HttpRequestHandle
                 //打开一个新的activity
                 Intent intent = new Intent(getActivity(), ArticleActivity.class);
                 Log.d("lee", "start article activity");
-                intent.putExtra("article", mArticleAdapter.getArticles().get(position));
+                int realPosition = position - 1;
+                intent.putExtra("article", mArticleAdapter.getArticles().get(realPosition));
                 getActivity().startActivity(intent);
             }
         });
