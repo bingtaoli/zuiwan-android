@@ -72,8 +72,9 @@ public class ArticleContentModel extends ZuiwantModel  {
     private static String repairContent(String content,String replaceHttp){
         /**
          * 其中\\\\会转换成\这一个字符
-         * \\s为\s
+         * \\s为\s, 匹配任何空白字符
          */
+        // TODO 微信图片会带有data-src,会导致bug,参见"校园最美手写大赛"那篇文章
         String patternStr="<img\\s*([^>]*)\\s*src=\\\"(.*?)\\\"\\s*([^>]*)>";
         Pattern pattern = Pattern.compile(patternStr, Pattern.CASE_INSENSITIVE);
         Matcher matcher = pattern.matcher(content);
