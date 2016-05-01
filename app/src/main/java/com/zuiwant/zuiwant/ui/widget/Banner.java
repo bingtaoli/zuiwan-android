@@ -5,6 +5,7 @@ import android.os.Handler;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -54,7 +55,7 @@ public class Banner extends FrameLayout implements View.OnClickListener {
     private void initView() {
         views = new ArrayList<View>();
         iv_dots = new ArrayList<ImageView>();
-        delayTime = 2000;
+        delayTime = 4000;
     }
 
     public Banner(Context context, AttributeSet attrs) {
@@ -91,12 +92,15 @@ public class Banner extends FrameLayout implements View.OnClickListener {
             params.rightMargin = 5;
             ll_dot.addView(iv_dot, params);
             iv_dots.add(iv_dot);
+            initIvDots();
         }
 
         for (int i = 0; i <= len + 1; i++) {
             View fm = LayoutInflater.from(context).inflate(R.layout.banner_content_layout, null);
             ImageView iv = (ImageView) fm.findViewById(R.id.iv_title);
             TextView tv_title = (TextView) fm.findViewById(R.id.tv_title);
+            LinearLayout background = (LinearLayout)fm.findViewById(R.id.background_transparent);
+            background.setAlpha((float)0.8);
             iv.setScaleType(ImageView.ScaleType.CENTER_CROP);
             if (i == 0) {
                 mImageLoader.displayImage(topRecommendArticles.get(len - 1).articleImg, iv, options);
@@ -113,33 +117,30 @@ public class Banner extends FrameLayout implements View.OnClickListener {
         }
         vp.setAdapter(new MyPagerAdapter());
         vp.setFocusable(true);
-        vp.setCurrentItem(1);
-        currentItem = 1;
+        vp.setCurrentItem(0);
+        currentItem = 0;
         vp.addOnPageChangeListener(new MyOnPageChangeListener());
         startPlay();
     }
 
     private void startPlay() {
         isAutoPlay = true;
-        handler.postDelayed(task, 3000);
+        handler.postDelayed(task, delayTime);
     }
 
     private final Runnable task = new Runnable() {
 
         @Override
         public void run() {
-            if (isAutoPlay) {
-                currentItem = currentItem % (topRecommendArticles.size() + 1) + 1;
-                if (currentItem == 1) {
-                    vp.setCurrentItem(currentItem, false);
-                    handler.post(task);
-                } else {
-                    vp.setCurrentItem(currentItem);
-                    handler.postDelayed(task, 5000);
-                }
+            currentItem = vp.getCurrentItem();
+            if (currentItem == topRecommendArticles.size() - 1){
+                //到头了,回到开始
+                currentItem = 0;
             } else {
-                handler.postDelayed(task, 5000);
+                currentItem++;
             }
+            vp.setCurrentItem(currentItem);
+            handler.postDelayed(task, delayTime);
         }
     };
 
@@ -170,41 +171,59 @@ public class Banner extends FrameLayout implements View.OnClickListener {
 
     class MyOnPageChangeListener implements ViewPager.OnPageChangeListener {
 
+        /**
+         * Called when the scroll state changes
+         * @param arg0
+         */
         @Override
         public void onPageScrollStateChanged(int arg0) {
             switch (arg0) {
-                case 1:
-                    isAutoPlay = false;
+                //Indicates that the pager is currently being dragged by the user
+                case ViewPager.SCROLL_STATE_DRAGGING:
+                    //先取消
+                    handler.removeCallbacks(task);
+                    handler.postDelayed(task, delayTime);
                     break;
-                case 2:
-                    isAutoPlay = true;
-                    break;
-                case 0:
-                    if (vp.getCurrentItem() == 0) {
-                        vp.setCurrentItem(topRecommendArticles.size(), false);
-                    } else if (vp.getCurrentItem() == topRecommendArticles.size() + 1) {
-                        vp.setCurrentItem(1, false);
-                    }
-                    currentItem = vp.getCurrentItem();
-                    isAutoPlay = true;
+                default:
                     break;
             }
         }
 
+        /**
+         * This method will be invoked when the current page is scrolled,
+         * either as part of a programmatically initiated smooth scroll or a user initiated touch scroll.
+         * @param arg0
+         * @param arg1
+         * @param arg2
+         */
         @Override
         public void onPageScrolled(int arg0, float arg1, int arg2) {
         }
 
+        /**
+         * This method will be invoked when a new page becomes selected.
+         * @param arg0
+         */
         @Override
         public void onPageSelected(int arg0) {
+            Log.d("lee on page Selected", "" + arg0);
             for (int i = 0; i < iv_dots.size(); i++) {
-                if (i == arg0 - 1) {
-                    //iv_dots.get(i).setImageResource(R.drawable.dot_focus);
+                if (i == arg0) {
+                    iv_dots.get(i).setImageResource(R.drawable.dot_focus);
                 } else {
-                    //iv_dots.get(i).setImageResource(R.drawable.dot_blur);
+                    iv_dots.get(i).setImageResource(R.drawable.dot_blur);
                 }
             }
+        }
+    }
 
+    public void initIvDots(){
+        if (iv_dots.size() == 0){
+            return;
+        }
+        iv_dots.get(0).setImageResource(R.drawable.dot_focus);
+        for (int i = 1; i < iv_dots.size(); i++){
+            iv_dots.get(i).setImageResource(R.drawable.dot_blur);
         }
     }
 

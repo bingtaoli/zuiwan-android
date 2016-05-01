@@ -14,7 +14,6 @@ import com.zuiwant.zuiwant.ui.fragment.MediasFragment;
 import com.zuiwant.zuiwant.ui.fragment.RecommendFragment;
 import com.zuiwant.zuiwant.ui.fragment.TopicsFragment;
 import com.zuiwant.zuiwant.ui.widget.ChangeColorIconWithText;
-import com.zuiwant.zuiwant.ui.fragment.ViewPagerFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -60,7 +59,7 @@ public class MainActivity extends AppCompatActivity implements TabHost.OnTabChan
 
     private void initTabHost() {
         mLayoutInflater = LayoutInflater.from(this);
-        mTabHost = (FragmentTabHost) findViewById(android.R.id.tabhost);
+        mTabHost = (FragmentTabHost) findViewById(R.id.tabhost);
         mTabHost.setup(this, getSupportFragmentManager(), R.id.tab_content);
         mTabHost.getTabWidget().setDividerDrawable(null);
 
@@ -69,7 +68,6 @@ public class MainActivity extends AppCompatActivity implements TabHost.OnTabChan
         ChangeColorIconWithText[] tabviews = new ChangeColorIconWithText[4];
 
         Bundle bundle = new Bundle();
-        bundle.putInt("type", ViewPagerFragment.TypeViewPager_Aggregation);
         texts[0] = getString(R.string.title_activity_main_recommend);
         tabviews[0] = getTabView(R.layout.item_tab_recommend);
         tabSpecs[0] = mTabHost.newTabSpec(texts[0]).setIndicator(tabviews[0]);

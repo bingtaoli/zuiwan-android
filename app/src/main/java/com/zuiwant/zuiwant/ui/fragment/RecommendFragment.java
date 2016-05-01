@@ -137,15 +137,6 @@ public class RecommendFragment extends BaseFragment implements HttpRequestHandle
         if (data.size() == 0) return;
 
         mArticleAdapter.insertAtBack(data, currentPage != 1);
-
-        //update top articles
-        if (data.size() > 3){
-            // TODO 现在每次刷新,都会导致header的articles不一样,说明page还是有问题
-            Log.d("lee update top articles", "yes");
-            mArticleAdapter.banner.setTopEntities(data.subList(0, 3));
-        }
-
-        mArticleAdapter.notifyDataSetChanged();
     }
 
     @Override

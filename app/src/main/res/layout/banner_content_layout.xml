@@ -12,6 +12,15 @@
         android:layout_height="match_parent"
         android:scaleType="centerCrop" />
 
+    <LinearLayout
+        android:id="@+id/background_transparent"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/gray_80">
+
+    </LinearLayout>
+
     <TextView
         android:id="@+id/tv_title"
         android:layout_width="wrap_content"

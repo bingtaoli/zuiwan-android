@@ -64,6 +64,10 @@ public class ArticlesAdapter extends BaseRecycleAdapter {
                 articleViewHolder.ivCover.setImageURI(Uri.parse(article.articleImg));
             }
         } else if (viewHolder instanceof VHHeader){
+            if (articles.size() > 2){
+                Log.d("lee update top articles", "yes");
+                banner.setTopEntities(articles.subList(0, 3));
+            }
             StaggeredGridLayoutManager.LayoutParams layoutParams = (StaggeredGridLayoutManager.LayoutParams) viewHolder.itemView.getLayoutParams();
             layoutParams.setFullSpan(true);
         }
