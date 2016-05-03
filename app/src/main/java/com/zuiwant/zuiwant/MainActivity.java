@@ -95,6 +95,8 @@ public class MainActivity extends AppCompatActivity implements TabHost.OnTabChan
         mTabHost.setOnTabChangedListener(this);
         tabviews[0].setIconAlpha(1.0f);
         setTitle(texts[0]);
+        //mTabHost.setAlpha((float)0.6);
+        //mTabHost.getTabWidget().getChildTabViewAt(0).setBackgroundResource(R.drawable.ic_default_cover);
     }
 
     private ChangeColorIconWithText getTabView(int layoutId) {
