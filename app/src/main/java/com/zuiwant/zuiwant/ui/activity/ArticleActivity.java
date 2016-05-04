@@ -1,12 +1,14 @@
 package com.zuiwant.zuiwant.ui.activity;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.webkit.WebView;
 
+import com.facebook.drawee.view.SimpleDraweeView;
 import com.zuiwant.zuiwant.R;
 import com.zuiwant.zuiwant.api.HttpRequestHandler;
 import com.zuiwant.zuiwant.api.ZWManager;
@@ -23,7 +25,8 @@ public class ArticleActivity extends AppCompatActivity implements HttpRequestHan
     public ArticleModel article;
     public int articleId;
     private WebView mWebView;
-    SwipeRefreshLayout mSwipeLayout;
+    private SwipeRefreshLayout mSwipeLayout;
+    private SimpleDraweeView ivCover;
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
@@ -43,6 +46,9 @@ public class ArticleActivity extends AppCompatActivity implements HttpRequestHan
             }
         });
         mSwipeLayout.setRefreshing(true);
+
+        ivCover = (SimpleDraweeView) findViewById(R.id.iv_cover);
+        ivCover.setImageURI(Uri.parse(article.articleImg));
 
         mWebView = (WebView) findViewById(R.id.webview);
         String html = "精彩内容马上达到 : )";

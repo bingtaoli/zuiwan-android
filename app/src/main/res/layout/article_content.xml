@@ -1,24 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    xmlns:fresco="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
     android:layout_height="match_parent">
-
 
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/swipe_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <android.support.v4.widget.NestedScrollView
+        <com.zuiwant.zuiwant.ui.widget.CustomScrollView
+            android:id="@+id/sv_root"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:scrollbars="vertical">
+            android:orientation="vertical">
 
-            <WebView
-                android:id="@+id/webview"
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"></WebView>
-        </android.support.v4.widget.NestedScrollView>
+                android:layout_height="match_parent">
+
+                <com.facebook.drawee.view.SimpleDraweeView
+                    android:id="@+id/iv_cover"
+                    android:layout_width="match_parent"
+                    android:layout_height="150dp"
+                    fresco:actualImageScaleType="centerCrop"
+                    fresco:placeholderImage="@drawable/ic_default_cover"
+                    fresco:placeholderImageScaleType="centerInside"/>
+
+                <android.support.v4.widget.NestedScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scrollbars="vertical"
+                    android:layout_below="@+id/iv_cover">
+
+                    <WebView
+                        android:id="@+id/webview"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"></WebView>
+                </android.support.v4.widget.NestedScrollView>
+
+            </RelativeLayout>
+
+        </com.zuiwant.zuiwant.ui.widget.CustomScrollView>
 
     </android.support.v4.widget.SwipeRefreshLayout>
 </LinearLayout>

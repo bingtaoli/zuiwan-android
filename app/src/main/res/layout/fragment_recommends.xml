@@ -5,13 +5,6 @@
     >
 
     <fragment
-        android:id="@+id/banner_fragment"
-        android:name="com.zuiwant.zuiwant.ui.fragment.BannerFragment"
-        android:layout_width="match_parent"
-        android:layout_height="180dp">
-    </fragment>
-
-    <fragment
         android:id="@+id/articles_fragment"
         android:name="com.zuiwant.zuiwant.ui.fragment.RecommendFragment"
         android:layout_width="match_parent"
