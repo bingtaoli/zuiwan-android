@@ -25,6 +25,7 @@ public class ArticlesAdapter extends BaseRecycleAdapter {
     private static final int TYPE_HEADER = 0;
     private static final int TYPE_ITEM = 1;
 
+    // TODO 也许adapter的数据很容易会被销毁,然后就会导致首页只有很后面的文章显示
     private List<ArticleModel> articles = new ArrayList<>();
     public Banner banner = null;
     private boolean hasGotTopArticles = false;
@@ -41,7 +42,6 @@ public class ArticlesAdapter extends BaseRecycleAdapter {
         if (viewType == TYPE_ITEM){
             return new ArticleViewHolder(inflater.inflate(R.layout.item_article, viewGroup, false));
         } else if (viewType == TYPE_HEADER){
-            Log.d("lee articles adapter", "refresh header");
             View header = inflater.inflate(R.layout.banner, viewGroup, false);
             banner = (Banner) header.findViewById(R.id.banner);
             return new VHHeader(header);
@@ -66,7 +66,6 @@ public class ArticlesAdapter extends BaseRecycleAdapter {
             }
         } else if (viewHolder instanceof VHHeader){
             if (!hasGotTopArticles  && articles.size() > 2){
-                Log.d("lee update top articles", "yes");
                 banner.setTopEntities(articles.subList(0, 3));
                 hasGotTopArticles = true;
             }
@@ -122,11 +121,9 @@ public class ArticlesAdapter extends BaseRecycleAdapter {
     public void insertAtBack(ArrayList<ArticleModel> data, boolean merge) {
         if (merge){
             articles.addAll(data);
-            Log.d("lee", "in adapter articles add data, now length is: " + articles.size());
         }
         else {
             articles = data;
-            Log.d("lee", "in adapter articles equals data, data is: " + articles.size());
         }
         //通知内容view已经更新
         notifyDataSetChanged();

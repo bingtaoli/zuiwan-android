@@ -14,6 +14,8 @@ import com.zuiwant.zuiwant.api.HttpRequestHandler;
 import com.zuiwant.zuiwant.api.ZWManager;
 import com.zuiwant.zuiwant.model.ArticleContentModel;
 import com.zuiwant.zuiwant.model.ArticleModel;
+import com.zuiwant.zuiwant.ui.widget.CustomScrollView;
+import com.zuiwant.zuiwant.ui.widget.TitleBar;
 
 import java.util.ArrayList;
 
@@ -27,6 +29,8 @@ public class ArticleActivity extends AppCompatActivity implements HttpRequestHan
     private WebView mWebView;
     private SwipeRefreshLayout mSwipeLayout;
     private SimpleDraweeView ivCover;
+    private TitleBar titleBar;
+    private CustomScrollView svRoot;
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
@@ -41,11 +45,26 @@ public class ArticleActivity extends AppCompatActivity implements HttpRequestHan
         mSwipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                Log.d("lee", "on refreshing article content");
                 requestArticleContent(true);
             }
         });
         mSwipeLayout.setRefreshing(true);
+
+        svRoot = (CustomScrollView) findViewById(R.id.sv_root);
+        titleBar = (TitleBar) findViewById(R.id.title_bar);
+        titleBar.setTitle(article.articleTitle);
+
+        svRoot.setScrollListener(new CustomScrollView.OnScrollListener() {
+            @Override
+            public void onScrollChanged(int x, int y, int oldX, int OldY) {
+                if (svRoot.getScrollY() >= (ivCover.getHeight() - titleBar.getHeight())) {
+                    titleBar.setColor(false);
+                } else {
+                    titleBar.setColor(true);
+                }
+
+            }
+        });
 
         ivCover = (SimpleDraweeView) findViewById(R.id.iv_cover);
         ivCover.setImageURI(Uri.parse(article.articleImg));

@@ -88,11 +88,11 @@ public class ArticleContentModel extends ZuiwantModel  {
             if(src.lastIndexOf(".")>0){
                 replaceSrc = src.substring(0,src.lastIndexOf(".")) + src.substring(src.lastIndexOf("."));
             }
-            Log.d("lee", "replaceSrc is: " + replaceSrc);
+            //Log.d("lee", "replaceSrc is: " + replaceSrc);
             if(!src.startsWith("http://")&&!src.startsWith("https://")){
                 replaceSrc = replaceHttp + replaceSrc;
             }
-            Log.d("lee", "replaceSrc result is: " + replaceSrc);
+            //Log.d("lee", "replaceSrc result is: " + replaceSrc);
             result = result.replaceAll(src, replaceSrc);
             i++;
         }
