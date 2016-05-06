@@ -1,12 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.zuiwant.zuiwant.ui.widget.ChangeColorIconWithText
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/id_indicator_discovery"
+<LinearLayout
     android:layout_width="0dp"
     android:layout_height="fill_parent"
-    android:padding="8dp"
-    app:tx_icon="@drawable/ic_tab_discovery_normal"
-    app:tx_text="@string/title_activity_main_recommend"
-    app:tx_text_size="12sp"
-    app:tx_color="@color/colorPrimary" />
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <TextView
+        android:id="@+id/recommend_icon"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:text="Hello"
+        android:textAlignment="center"
+        android:paddingTop="5dp"
+        android:textSize="18sp"
+        android:textColor="@color/colorPrimary"
+        android:layout_weight="1"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:paddingTop="5dp"
+        android:text="Hello"
+        android:textColor="@color/colorPrimary"
+        android:textAlignment="center"
+        android:layout_weight="1"/>
+    
+</LinearLayout>

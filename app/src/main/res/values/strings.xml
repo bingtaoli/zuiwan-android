@@ -8,7 +8,9 @@
     <string name="login_please_login">尚未登录</string>
     <string name="myinfo_medias">我关注的媒体</string>
     <string name="myinfo_articles">收藏的文章</string>
-
+    <string name="font_awesome_glass">&#xf000;</string>
+    <string name="font_awesome_music">&#xf001;</string>
+    <string name="zw_font_recommend">&#xe801;</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

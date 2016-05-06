@@ -1,6 +1,7 @@
 package com.zuiwant.zuiwant.ui.adapter;
 
 import android.content.Context;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
@@ -59,7 +60,7 @@ public class ArticlesAdapter extends BaseRecycleAdapter {
              */
             ArticleViewHolder articleViewHolder = (ArticleViewHolder) viewHolder;
             final ArticleModel article = articles.get(realPosition);
-            articleViewHolder.articleMediaName.setText(article.articleMediaName);
+            //articleViewHolder.articleMediaName.setText(article.articleMediaName);
             articleViewHolder.articleTitle.setText(article.articleTitle);
             if (article.articleImg != null && article.articleImg.length() > 0){
                 articleViewHolder.ivCover.setImageURI(Uri.parse(article.articleImg));
@@ -104,7 +105,7 @@ public class ArticlesAdapter extends BaseRecycleAdapter {
         public ArticleViewHolder(View itemView) {
             super(itemView);
             ivCover = (SimpleDraweeView) itemView.findViewById(R.id.iv_cover);
-            articleMediaName = (TextView) itemView.findViewById(R.id.article_media);
+            //articleMediaName = (TextView) itemView.findViewById(R.id.article_media);
             articleTitle = (TextView) itemView.findViewById(R.id.article_title);
             articleTopicName = (TextView) itemView.findViewById(R.id.article_topic);
         }

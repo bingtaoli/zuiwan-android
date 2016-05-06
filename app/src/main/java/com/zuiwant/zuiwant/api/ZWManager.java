@@ -72,6 +72,22 @@ public class ZWManager {
                 new WrappedJsonHttpResponseHandler<ArticleModel>(ctx, ArticleModel.class, key, handler));
     }
 
+    public static void getBanner(Context ctx, boolean refresh, int page,
+    final HttpRequestHandler<ArrayList<ArticleModel>> handler){
+        String key = "get_recommend_page_" + page;
+        if (!refresh) {
+            //尝试从缓存中加载
+            ArrayList<ArticleModel> recommends = PersistenceHelper.loadModelList(ctx, key);
+            if (recommends != null && recommends.size() > 0) {
+                SafeHandler.onSuccess(handler, recommends);
+                return;
+            }
+        }
+        String getRecommendsUrl = zuiwant + "article/get_recommend_articles?page=" + page;
+        new AsyncHttpClient().get(ctx, getRecommendsUrl,
+                new WrappedJsonHttpResponseHandler<ArticleModel>(ctx, ArticleModel.class, key, handler));
+    }
+
     public static void getOneArticle(Context ctx, int articleId, boolean refresh,
                                      final HttpRequestHandler<ArrayList<ArticleContentModel>> handler){
         String key = "get_article" + articleId;

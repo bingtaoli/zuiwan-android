@@ -8,6 +8,7 @@
     <color name="a150_gray">#96262626</color>
     <color name="gray_80">#50000000</color>
     <color name="transparent">#00000000</color>
-    <color name="transparent_white">#e4ffffff</color>
+    <color name="transparent_white">#e6eeeeee</color>
     <!-- ff is not transparent -->
+    <!--  e6 means 90% transparent, ee equals 238 -->
 </resources>

@@ -34,19 +34,19 @@
         tools:text="日期"/>
 
     <!--article media-->
-    <TextView
-        android:id="@+id/article_media"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_margin="8dp"
-        android:shadowColor="@color/gray"
-        android:shadowDx="-1"
-        android:shadowDy="-1"
-        android:shadowRadius="3.0"
-        android:textColor="@color/white"
-        android:textSize="16sp"
-        tools:text="日期"/>
+    <!--<TextView-->
+        <!--android:id="@+id/article_media"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_alignParentRight="true"-->
+        <!--android:layout_margin="8dp"-->
+        <!--android:shadowColor="@color/gray"-->
+        <!--android:shadowDx="-1"-->
+        <!--android:shadowDy="-1"-->
+        <!--android:shadowRadius="3.0"-->
+        <!--android:textColor="@color/white"-->
+        <!--android:textSize="16sp"-->
+        <!--tools:text="日期"/>-->
 
     <!--article title-->
     <TextView
