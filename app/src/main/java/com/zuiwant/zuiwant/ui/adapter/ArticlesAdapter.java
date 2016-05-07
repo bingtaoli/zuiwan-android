@@ -27,16 +27,13 @@ public class ArticlesAdapter extends BaseRecycleAdapter {
     private static final int TYPE_ITEM = 1;
 
     // TODO 也许adapter的数据很容易会被销毁,然后就会导致首页只有很后面的文章显示
-    private List<ArticleModel> articles = new ArrayList<>();
+    private List<ArticleModel> articles;
     public Banner banner = null;
     private boolean hasGotTopArticles = false;
 
-    public List<ArticleModel> getArticles(){
-        return articles;
-    }
-
-    public ArticlesAdapter(Context context){
+    public ArticlesAdapter(Context context, List<ArticleModel> articlesList){
         super(context);
+        this.articles = articlesList;
     }
 
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {

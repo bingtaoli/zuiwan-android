@@ -6,10 +6,9 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <TextView
-        android:id="@+id/recommend_icon"
+        android:id="@+id/icon"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:text="Hello"
         android:textAlignment="center"
         android:paddingTop="5dp"
         android:textSize="18sp"
@@ -20,7 +19,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:paddingTop="5dp"
-        android:text="Hello"
+        android:text="推荐"
         android:textColor="@color/colorPrimary"
         android:textAlignment="center"
         android:layout_weight="1"/>

@@ -30,6 +30,7 @@ public class RecommendFragment extends BaseFragment implements HttpRequestHandle
     RecyclerView mRecyclerView;
     ArticlesAdapter mArticleAdapter;
     SwipeRefreshLayout mSwipeLayout;
+    private ArrayList<ArticleModel> articles = new ArrayList<>();
 
     private int mPage = 1;
     private boolean mIsFirstTimeTouchBottom = true;
@@ -53,7 +54,7 @@ public class RecommendFragment extends BaseFragment implements HttpRequestHandle
         mRecyclerView.setLayoutManager(layoutManager);
         mRecyclerView.addOnScrollListener(getOnBottomListener(layoutManager));
 
-        mArticleAdapter = new ArticlesAdapter(getActivity());
+        mArticleAdapter = new ArticlesAdapter(getActivity(), articles);
 
         mRecyclerView.setAdapter(mArticleAdapter);
 
@@ -72,7 +73,7 @@ public class RecommendFragment extends BaseFragment implements HttpRequestHandle
                 Intent intent = new Intent(getActivity(), ArticleActivity.class);
                 Log.d("lee", "start article activity");
                 int realPosition = position - 1;
-                intent.putExtra("article", mArticleAdapter.getArticles().get(realPosition));
+                intent.putExtra("article", articles.get(realPosition));
                 getActivity().startActivity(intent);
             }
         });
@@ -137,7 +138,8 @@ public class RecommendFragment extends BaseFragment implements HttpRequestHandle
 
         if (data.size() == 0) return;
 
-        mArticleAdapter.insertAtBack(data, currentPage != 1);
+        articles.addAll(data);
+        mArticleAdapter.notifyDataSetChanged();
     }
 
     @Override
