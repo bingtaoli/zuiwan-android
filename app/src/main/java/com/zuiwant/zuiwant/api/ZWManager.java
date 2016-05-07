@@ -7,6 +7,7 @@ import com.zuiwant.zuiwant.model.ArticleContentModel;
 import com.zuiwant.zuiwant.model.ArticleModel;
 import com.zuiwant.zuiwant.model.MediaModel;
 import com.zuiwant.zuiwant.model.PersistenceHelper;
+import com.zuiwant.zuiwant.model.TopicDetailModel;
 import com.zuiwant.zuiwant.model.TopicModel;
 
 import java.util.ArrayList;
@@ -38,7 +39,7 @@ public class ZWManager {
             }
         }
         new AsyncHttpClient().get(ctx, getTopicsUrl,
-                new WrappedJsonHttpResponseHandler<TopicModel>(ctx, TopicModel.class, key, handler));
+                new WrappedJsonHttpResponseHandler<>(ctx, TopicModel.class, key, handler));
     }
 
     public static void getMedias(Context ctx, boolean refresh,
@@ -53,7 +54,7 @@ public class ZWManager {
             }
         }
         new AsyncHttpClient().get(ctx, getMediasUrl,
-                new WrappedJsonHttpResponseHandler<MediaModel>(ctx, MediaModel.class, key, handler));
+                new WrappedJsonHttpResponseHandler<>(ctx, MediaModel.class, key, handler));
     }
 
     public static void getRecommends(Context ctx, boolean refresh, int page,
@@ -69,7 +70,7 @@ public class ZWManager {
         }
         String getRecommendsUrl = zuiwant + "article/get_recommend_articles?page=" + page;
         new AsyncHttpClient().get(ctx, getRecommendsUrl,
-                new WrappedJsonHttpResponseHandler<ArticleModel>(ctx, ArticleModel.class, key, handler));
+                new WrappedJsonHttpResponseHandler<>(ctx, ArticleModel.class, key, handler));
     }
 
     public static void getBanner(Context ctx, boolean refresh, int page,
@@ -85,7 +86,7 @@ public class ZWManager {
         }
         String getRecommendsUrl = zuiwant + "article/get_recommend_articles?page=" + page;
         new AsyncHttpClient().get(ctx, getRecommendsUrl,
-                new WrappedJsonHttpResponseHandler<ArticleModel>(ctx, ArticleModel.class, key, handler));
+                new WrappedJsonHttpResponseHandler<>(ctx, ArticleModel.class, key, handler));
     }
 
     public static void getOneArticle(Context ctx, int articleId, boolean refresh,
@@ -101,7 +102,24 @@ public class ZWManager {
             }
         }
         new AsyncHttpClient().get(ctx, getOneArticleUrl,
-                new WrappedJsonHttpResponseHandler<ArticleContentModel>(ctx, ArticleContentModel.class, key, handler));
+                new WrappedJsonHttpResponseHandler<>(ctx, ArticleContentModel.class, key, handler));
+    }
+
+    public static void getTopicArticles(Context ctx, int topicId, boolean refresh,
+                                     final HttpRequestHandler<ArrayList<TopicDetailModel>> handler){
+        String key = "get_topic_article" + topicId;
+        String url = zuiwant + "topic/get_one_topic?id=" + topicId;
+        if (!refresh) {
+            //尝试从缓存中加载
+            //TODO 其实肯定只有一个TopicDetailModel返回,所以onSuccess可能以后会改
+            ArrayList<TopicDetailModel> topicDetails = PersistenceHelper.loadModelList(ctx, key);
+            if (topicDetails != null && topicDetails.size() > 0) {
+                SafeHandler.onSuccess(handler, topicDetails);
+                return;
+            }
+        }
+        new AsyncHttpClient().get(ctx, url,
+                new WrappedJsonHttpResponseHandler<>(ctx, TopicDetailModel.class, key, handler));
     }
 
 

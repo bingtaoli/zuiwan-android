@@ -19,10 +19,11 @@ import java.util.List;
  */
 public class TopicsAdapter extends BaseRecycleAdapter {
 
-    private List<TopicModel> topics = new ArrayList<>();
+    private List<TopicModel> topics;
 
-    public TopicsAdapter(Context context){
+    public TopicsAdapter(Context context, List<TopicModel> topicsList){
         super(context);
+        topics = topicsList;
     }
 
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
@@ -65,14 +66,4 @@ public class TopicsAdapter extends BaseRecycleAdapter {
             articleNum = (TextView) itemView.findViewById(R.id.txt_articles);
         }
     }
-
-    public void insertAtBack(ArrayList<TopicModel> data, boolean merge) {
-        if (merge)
-            topics.addAll(data);
-        else
-            topics = data;
-        //通知内容view已经更新
-        notifyDataSetChanged();
-    }
-
 }

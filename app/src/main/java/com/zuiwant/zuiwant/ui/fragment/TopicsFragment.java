@@ -1,5 +1,6 @@
 package com.zuiwant.zuiwant.ui.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -12,6 +13,8 @@ import com.zuiwant.zuiwant.R;
 import com.zuiwant.zuiwant.api.HttpRequestHandler;
 import com.zuiwant.zuiwant.api.ZWManager;
 import com.zuiwant.zuiwant.model.TopicModel;
+import com.zuiwant.zuiwant.ui.activity.ArticleActivity;
+import com.zuiwant.zuiwant.ui.activity.TopicActivity;
 import com.zuiwant.zuiwant.ui.adapter.BaseRecycleAdapter;
 import com.zuiwant.zuiwant.ui.adapter.TopicsAdapter;
 
@@ -25,6 +28,7 @@ public class TopicsFragment extends BaseFragment implements HttpRequestHandler<A
     RecyclerView mRecyclerView;
     TopicsAdapter mTopicAdapter;
     SwipeRefreshLayout mSwipeLayout;
+    ArrayList<TopicModel> topics = new ArrayList<>();
 
     boolean mIsLoading; //是否在加载
 
@@ -41,22 +45,22 @@ public class TopicsFragment extends BaseFragment implements HttpRequestHandler<A
 
     @Override
     public void setViewStatus(){
+        // TODO 为什么一定要设置LayoutManager呢?不设置就会报错
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        mTopicAdapter = new TopicsAdapter(getActivity());
+        mTopicAdapter = new TopicsAdapter(getActivity(), topics);
         mRecyclerView.setAdapter(mTopicAdapter);
 
         mTopicAdapter.setOnItemClickListener(new BaseRecycleAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                //打开一个新的activity
-                //暂时只记录log
-                Log.d("lee", "one item is clicked");
+                Intent intent = new Intent(getActivity(), TopicActivity.class);
+                intent.putExtra("topicId", topics.get(position).id);
+                getActivity().startActivity(intent);
             }
         });
         mSwipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                Log.d("lee", "on refreshing");
                 requestTopics(true);
             }
         });
@@ -79,8 +83,6 @@ public class TopicsFragment extends BaseFragment implements HttpRequestHandler<A
 
     @Override
     public void onSuccess(ArrayList<TopicModel> data) {
-        Log.d("lee", "topic fragment on success");
-        Log.d("lee", "data goes to topic fragment length is " + data.size());
         onSuccess(data, 1, 1);
     }
 
@@ -88,10 +90,9 @@ public class TopicsFragment extends BaseFragment implements HttpRequestHandler<A
     public void onSuccess(ArrayList<TopicModel> data, int totalPages, int currentPage) {
         mSwipeLayout.setRefreshing(false);
         mIsLoading = false;
-
         if (data.size() == 0) return;
-
-        mTopicAdapter.insertAtBack(data, currentPage != 1);
+        topics.addAll(data);
+        mTopicAdapter.notifyDataSetChanged();
     }
 
     @Override

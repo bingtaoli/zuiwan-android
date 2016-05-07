@@ -6,7 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-/**
+/*
  * Created by matthew on 16/4/14.
  */
 public class BaseRecycleAdapter  extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
@@ -29,10 +29,6 @@ public class BaseRecycleAdapter  extends RecyclerView.Adapter<RecyclerView.ViewH
 
     }
 
-    /**
-     * 记得重写
-     * @return
-     */
     @Override
     public  int getItemCount() {
         return 0;
@@ -45,7 +41,6 @@ public class BaseRecycleAdapter  extends RecyclerView.Adapter<RecyclerView.ViewH
     public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
         this.onItemClickListener = onItemClickListener;
     }
-
 
     /**
      * BaseRecycleAdapter中定义BaseViewHolder
