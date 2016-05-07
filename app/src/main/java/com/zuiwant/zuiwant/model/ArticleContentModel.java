@@ -22,14 +22,14 @@ public class ArticleContentModel extends ZuiwantModel  {
     @Override
     public void parse(JSONObject jsonObject) throws JSONException {
         articleAuthor = jsonObject.getString("article_author");
-        articleContent = jsonObject.getString("article_content");
+        articleContent = jsonObject.getString("activity_article");
         articleImg = jsonObject.getString("article_img");
         articleTitle = jsonObject.getString("article_title");
         createTime = jsonObject.getString("create_time");
     }
 
     public static String formatContent(String content){
-        //TODO 正则把图片src补上zuiwant.com
+        // DONE 正则把图片src补上zuiwant.com
         String replaceHttp = "http://zuiwant.com";
         content = repairContent(content, replaceHttp);
         return content;

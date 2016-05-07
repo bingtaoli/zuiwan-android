@@ -26,10 +26,9 @@ public class ArticlesAdapter extends BaseRecycleAdapter {
     private static final int TYPE_HEADER = 0;
     private static final int TYPE_ITEM = 1;
 
-    // TODO 也许adapter的数据很容易会被销毁,然后就会导致首页只有很后面的文章显示
     private List<ArticleModel> articles;
     public Banner banner = null;
-    private boolean hasGotTopArticles = false;
+    private boolean hasGotBannerArticles = false;
 
     public ArticlesAdapter(Context context, List<ArticleModel> articlesList){
         super(context);
@@ -57,15 +56,14 @@ public class ArticlesAdapter extends BaseRecycleAdapter {
              */
             ArticleViewHolder articleViewHolder = (ArticleViewHolder) viewHolder;
             final ArticleModel article = articles.get(realPosition);
-            //articleViewHolder.articleMediaName.setText(article.articleMediaName);
             articleViewHolder.articleTitle.setText(article.articleTitle);
             if (article.articleImg != null && article.articleImg.length() > 0){
                 articleViewHolder.ivCover.setImageURI(Uri.parse(article.articleImg));
             }
         } else if (viewHolder instanceof VHHeader){
-            if (!hasGotTopArticles  && articles.size() > 2){
+            if (!hasGotBannerArticles  && articles.size() > 2){
                 banner.setTopEntities(articles.subList(0, 3));
-                hasGotTopArticles = true;
+                hasGotBannerArticles = true;
             }
             StaggeredGridLayoutManager.LayoutParams layoutParams = (StaggeredGridLayoutManager.LayoutParams) viewHolder.itemView.getLayoutParams();
             layoutParams.setFullSpan(true);
@@ -87,22 +85,20 @@ public class ArticlesAdapter extends BaseRecycleAdapter {
 
     @Override
     public int getItemViewType(int position) {
-        if (isPositionHeader(position))
+        if (isPositionHeader(position)){
             return TYPE_HEADER;
-
+        }
         return TYPE_ITEM;
     }
 
     public class ArticleViewHolder extends BaseViewHolder {
         SimpleDraweeView ivCover;
-        public TextView articleMediaName;
         public TextView articleTitle;
         public TextView articleTopicName;
 
         public ArticleViewHolder(View itemView) {
             super(itemView);
             ivCover = (SimpleDraweeView) itemView.findViewById(R.id.iv_cover);
-            //articleMediaName = (TextView) itemView.findViewById(R.id.article_media);
             articleTitle = (TextView) itemView.findViewById(R.id.article_title);
             articleTopicName = (TextView) itemView.findViewById(R.id.article_topic);
         }
@@ -114,16 +110,5 @@ public class ArticlesAdapter extends BaseRecycleAdapter {
             super(itemView);
         }
 
-    }
-
-    public void insertAtBack(ArrayList<ArticleModel> data, boolean merge) {
-        if (merge){
-            articles.addAll(data);
-        }
-        else {
-            articles = data;
-        }
-        //通知内容view已经更新
-        notifyDataSetChanged();
     }
 }

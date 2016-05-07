@@ -19,10 +19,11 @@ import com.zuiwant.zuiwant.ui.widget.TitleBar;
 
 import java.util.ArrayList;
 
-/**
+/*
  * Created by matthew on 16/4/23.
  */
-public class ArticleActivity extends AppCompatActivity implements HttpRequestHandler<ArrayList<ArticleContentModel>> {
+public class ArticleActivity extends AppCompatActivity
+        implements HttpRequestHandler<ArrayList<ArticleContentModel>> {
 
     public ArticleModel article;
     public int articleId;
@@ -40,7 +41,7 @@ public class ArticleActivity extends AppCompatActivity implements HttpRequestHan
         /**
          * no need for article fragment, use article activity to show ui
          */
-        setContentView(R.layout.article_content);
+        setContentView(R.layout.activity_article);
         mSwipeLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_container);
         mSwipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override

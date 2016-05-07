@@ -197,12 +197,10 @@ public class Banner extends FrameLayout implements View.OnClickListener {
                     break;
                 //SCROLL_STATE_SETTLING： pager正在自动沉降，相当于松手后，pager恢复到一个完整pager的过程
                 case ViewPager.SCROLL_STATE_SETTLING:
-                    Log.d("lee", "SCROLL_STATE_SETTLING");
                     isAutoPlay = true;
                     break;
                 //SCROLL_STATE_IDLE pager处于空闲状态
                 case ViewPager.SCROLL_STATE_IDLE:
-                    Log.d("lee", "SCROLL_STATE_IDLE");
                     if (vp.getCurrentItem() == 0) {
                         vp.setCurrentItem(topRecommendArticlesSize, false);
                     } else if (vp.getCurrentItem() == topRecommendArticlesSize + 1) {
@@ -232,7 +230,6 @@ public class Banner extends FrameLayout implements View.OnClickListener {
          */
         @Override
         public void onPageSelected(int arg0) {
-            Log.d("lee", "on page selected " + arg0);
             // NOTE 0    1, 2, 3    4
             for (int i = 0; i < iv_dots.size(); i++) {
                 if (i == arg0 - 1) {

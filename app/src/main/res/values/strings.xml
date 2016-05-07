@@ -14,7 +14,4 @@
     <string name="zw_font_topic">&#xe806;</string>
     <string name="zw_font_media">&#xe80C;</string>
     <string name="zw_font_account">&#xe807;</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

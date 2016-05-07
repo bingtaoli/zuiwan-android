@@ -17,7 +17,7 @@ import com.zuiwant.zuiwant.ui.adapter.TopicsAdapter;
 
 import java.util.ArrayList;
 
-/**
+/*
  * Created by matthew on 16/4/13.
  */
 public class TopicsFragment extends BaseFragment implements HttpRequestHandler<ArrayList<TopicModel>> {

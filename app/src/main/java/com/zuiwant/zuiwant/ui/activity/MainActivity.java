@@ -1,17 +1,17 @@
-package com.zuiwant.zuiwant;
+package com.zuiwant.zuiwant.ui.activity;
 
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTabHost;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TabHost;
 import android.widget.TextView;
 
 import com.facebook.drawee.backends.pipeline.Fresco;
+import com.zuiwant.zuiwant.R;
 import com.zuiwant.zuiwant.ui.fragment.AccountFragment;
 import com.zuiwant.zuiwant.ui.fragment.MediasFragment;
 import com.zuiwant.zuiwant.ui.fragment.RecommendFragment;
@@ -51,7 +51,7 @@ public class MainActivity extends AppCompatActivity implements TabHost.OnTabChan
 
         Bundle bundle = new Bundle();
         texts[0] = getString(R.string.title_activity_main_recommend);
-        LinearLayout tab1 = getTabView(R.layout.item_tab_recommend);
+        LinearLayout tab1 = getTabView(R.layout.tab_recommend);
 
         TextView recommend =  (TextView)tab1.findViewById(R.id.icon);
         recommend.setTypeface(font);
@@ -62,7 +62,7 @@ public class MainActivity extends AppCompatActivity implements TabHost.OnTabChan
         mTabIndicators.add(tabviews[0]);
 
         texts[1] = getString(R.string.title_activity_main_topic);
-        LinearLayout tab2 = getTabView(R.layout.item_tab_topic);
+        LinearLayout tab2 = getTabView(R.layout.tab_topic);
         TextView topic =  (TextView)tab2.findViewById(R.id.icon);
         topic.setTypeface(font);
         topic.setText(R.string.zw_font_topic);
@@ -72,7 +72,7 @@ public class MainActivity extends AppCompatActivity implements TabHost.OnTabChan
         mTabIndicators.add(tabviews[1]);
 
         texts[2] = getString(R.string.title_activity_main_media);
-        LinearLayout tab3 = getTabView(R.layout.item_tab_media);
+        LinearLayout tab3 = getTabView(R.layout.tab_media);
         TextView media =  (TextView)tab3.findViewById(R.id.icon);
         media.setTypeface(font);
         media.setText(R.string.zw_font_media);
@@ -82,7 +82,7 @@ public class MainActivity extends AppCompatActivity implements TabHost.OnTabChan
         mTabIndicators.add(tabviews[2]);
 
         texts[3] = getString(R.string.title_activity_main_account);
-        LinearLayout tab4 = getTabView(R.layout.item_tab_account);
+        LinearLayout tab4 = getTabView(R.layout.tab_account);
         TextView account =  (TextView)tab4.findViewById(R.id.icon);
         account.setTypeface(font);
         account.setText(R.string.zw_font_account);

@@ -46,7 +46,7 @@ public class RecommendFragment extends BaseFragment implements HttpRequestHandle
      */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        LinearLayout layout = (LinearLayout) inflater.inflate(R.layout.fragment_recommends_articles, container, false);
+        LinearLayout layout = (LinearLayout) inflater.inflate(R.layout.fragment_recommends, container, false);
 
         final StaggeredGridLayoutManager layoutManager =
                 new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
@@ -71,7 +71,6 @@ public class RecommendFragment extends BaseFragment implements HttpRequestHandle
             public void onItemClick(View view, int position) {
                 //打开一个新的activity
                 Intent intent = new Intent(getActivity(), ArticleActivity.class);
-                Log.d("lee", "start article activity");
                 int realPosition = position - 1;
                 intent.putExtra("article", articles.get(realPosition));
                 getActivity().startActivity(intent);
@@ -80,7 +79,6 @@ public class RecommendFragment extends BaseFragment implements HttpRequestHandle
         mSwipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                Log.d("lee", "on refreshing");
                 requestRecommends(true, mPage);
             }
         });
