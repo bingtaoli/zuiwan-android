@@ -122,10 +122,6 @@ public class RecommendFragment extends BaseFragment implements HttpRequestHandle
 
     @Override
     public void onSuccess(ArrayList<ArticleModel> data) {
-        /**
-         * recommend不用add,因为在adapter中的articles是对recommend的引用
-         * 如果recommend也加一遍,则每次更新都会增加两次!
-         */
         onSuccess(data, mPage, mPage);
     }
 

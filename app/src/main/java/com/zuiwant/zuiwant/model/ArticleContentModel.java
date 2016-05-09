@@ -22,7 +22,7 @@ public class ArticleContentModel extends ZuiwantModel  {
     @Override
     public void parse(JSONObject jsonObject) throws JSONException {
         articleAuthor = jsonObject.getString("article_author");
-        articleContent = jsonObject.getString("activity_article");
+        articleContent = jsonObject.getString("article_content");
         articleImg = jsonObject.getString("article_img");
         articleTitle = jsonObject.getString("article_title");
         createTime = jsonObject.getString("create_time");

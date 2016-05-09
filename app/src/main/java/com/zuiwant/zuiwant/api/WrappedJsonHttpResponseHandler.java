@@ -81,9 +81,7 @@ class WrappedJsonHttpResponseHandler<T extends ZuiwantModel> extends JsonHttpRes
      */
     @Override
     public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
-        Log.d("lee", "json http response success, model type: " + c.getName());
         ArrayList<T> models = new ArrayList<T>();
-        Log.d("lee", "json response length is " + response.length());
         for (int i = 0; i < response.length(); i++) {
             try {
                 JSONObject jsonObj = response.getJSONObject(i);
