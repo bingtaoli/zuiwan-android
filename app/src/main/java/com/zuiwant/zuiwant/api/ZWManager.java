@@ -7,6 +7,7 @@ import com.zuiwant.zuiwant.model.ArticleContentModel;
 import com.zuiwant.zuiwant.model.ArticleModel;
 import com.zuiwant.zuiwant.model.MediaModel;
 import com.zuiwant.zuiwant.model.PersistenceHelper;
+import com.zuiwant.zuiwant.model.RecommendPageModel;
 import com.zuiwant.zuiwant.model.TopicDetailModel;
 import com.zuiwant.zuiwant.model.TopicModel;
 
@@ -58,19 +59,18 @@ public class ZWManager {
     }
 
     public static void getRecommends(Context ctx, boolean refresh, int page,
-                                 final HttpRequestHandler<ArrayList<ArticleModel>> handler){
+                                 final HttpRequestHandler<ArrayList<RecommendPageModel>> handler){
         String key = "get_recommend_page_" + page;
         if (!refresh) {
-            //尝试从缓存中加载
-            ArrayList<ArticleModel> recommends = PersistenceHelper.loadModelList(ctx, key);
+            ArrayList<RecommendPageModel> recommends = PersistenceHelper.loadModelList(ctx, key);
             if (recommends != null && recommends.size() > 0) {
                 SafeHandler.onSuccess(handler, recommends);
                 return;
             }
         }
-        String getRecommendsUrl = zuiwant + "article/get_recommend_articles?page=" + page;
+        String getRecommendsUrl = zuiwant + "article/get_recommend?page=" + page;
         new AsyncHttpClient().get(ctx, getRecommendsUrl,
-                new WrappedJsonHttpResponseHandler<>(ctx, ArticleModel.class, key, handler));
+                new WrappedJsonHttpResponseHandler<>(ctx, RecommendPageModel.class, key, handler));
     }
 
     public static void getBanner(Context ctx, boolean refresh, int page,

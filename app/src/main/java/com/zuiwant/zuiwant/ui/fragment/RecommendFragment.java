@@ -17,6 +17,7 @@ import com.zuiwant.zuiwant.R;
 import com.zuiwant.zuiwant.api.HttpRequestHandler;
 import com.zuiwant.zuiwant.api.ZWManager;
 import com.zuiwant.zuiwant.model.ArticleModel;
+import com.zuiwant.zuiwant.model.RecommendPageModel;
 import com.zuiwant.zuiwant.ui.activity.ArticleActivity;
 import com.zuiwant.zuiwant.ui.adapter.ArticlesAdapter;
 import com.zuiwant.zuiwant.ui.adapter.BaseRecycleAdapter;
@@ -27,7 +28,7 @@ import java.util.ArrayList;
 /*
  * Created by matthew on 16/4/30.
  */
-public class RecommendFragment extends BaseFragment implements HttpRequestHandler<ArrayList<ArticleModel>> {
+public class RecommendFragment extends BaseFragment implements HttpRequestHandler<ArrayList<RecommendPageModel>> {
 
     private static final int PRELOAD_SIZE = 4; //已经加载
     RecyclerView mRecyclerView;
@@ -100,6 +101,7 @@ public class RecommendFragment extends BaseFragment implements HttpRequestHandle
     public void onActivityCreated(Bundle savedInstanceState){
         super.onActivityCreated(savedInstanceState);
         mSwipeLayout.setRefreshing(true);
+        //TODO 网络好的时候true
         requestRecommends(false);
     }
 
@@ -142,12 +144,12 @@ public class RecommendFragment extends BaseFragment implements HttpRequestHandle
     }
 
     @Override
-    public void onSuccess(ArrayList<ArticleModel> data) {
+    public void onSuccess(ArrayList<RecommendPageModel> data) {
         onSuccess(data, mPage, mPage);
     }
 
     @Override
-    public void onSuccess(ArrayList<ArticleModel> data, int totalPages, int currentPage) {
+    public void onSuccess(ArrayList<RecommendPageModel> data, int totalPages, int currentPage) {
         mSwipeLayout.setRefreshing(false);
         mIsLoading = false;
 
@@ -157,21 +159,22 @@ public class RecommendFragment extends BaseFragment implements HttpRequestHandle
             //刷新,不是loadMore
             articles.clear();
         }
-        articles.addAll(data);
+        articles.addAll(data.get(0).recommend);
 
         //NOTE bannerList 是为了解决articles.subList带来的多线程安全问题.
-        ArrayList<ArticleModel> bannerList = new ArrayList<>();
-        for (int i = 0; i < 3; i++){
-            bannerList.add(articles.get(i));
-        }
-
-        //banner
-        mBanner.setPages(new CBViewHolderCreator<BannerHolderView>() {
-            @Override
-            public BannerHolderView createHolder() {
-                return new BannerHolderView();
+        if (data.get(0).banner != null && data.get(0).banner.size() > 0){
+            ArrayList<ArticleModel> bannerList = new ArrayList<>();
+            for (int i = 0; i < 3; i++){
+                bannerList.add(data.get(0).banner.get(i));
             }
-        }, bannerList);
+            //banner
+            mBanner.setPages(new CBViewHolderCreator<BannerHolderView>() {
+                @Override
+                public BannerHolderView createHolder() {
+                    return new BannerHolderView();
+                }
+            }, bannerList);
+        }
 
         mArticleAdapter.notifyDataSetChanged();
     }

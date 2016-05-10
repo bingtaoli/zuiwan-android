@@ -15,7 +15,7 @@ import com.zuiwant.zuiwant.model.ArticleModel;
 
 import java.util.List;
 
-/**
+/*
  * Created by matthew on 16/4/17.
  */
 public class ArticlesAdapter extends BaseRecycleAdapter {
