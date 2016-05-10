@@ -11,6 +11,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
+import com.bigkoo.convenientbanner.ConvenientBanner;
+import com.bigkoo.convenientbanner.holder.CBViewHolderCreator;
 import com.zuiwant.zuiwant.R;
 import com.zuiwant.zuiwant.api.HttpRequestHandler;
 import com.zuiwant.zuiwant.api.ZWManager;
@@ -18,16 +20,19 @@ import com.zuiwant.zuiwant.model.ArticleModel;
 import com.zuiwant.zuiwant.ui.activity.ArticleActivity;
 import com.zuiwant.zuiwant.ui.adapter.ArticlesAdapter;
 import com.zuiwant.zuiwant.ui.adapter.BaseRecycleAdapter;
+import com.zuiwant.zuiwant.ui.widget.BannerHolderView;
 
 import java.util.ArrayList;
 
-/**
+/*
  * Created by matthew on 16/4/30.
  */
 public class RecommendFragment extends BaseFragment implements HttpRequestHandler<ArrayList<ArticleModel>> {
 
     private static final int PRELOAD_SIZE = 4; //已经加载
     RecyclerView mRecyclerView;
+    View mHeaderView;
+    ConvenientBanner mBanner;
     ArticlesAdapter mArticleAdapter;
     SwipeRefreshLayout mSwipeLayout;
     private ArrayList<ArticleModel> articles = new ArrayList<>();
@@ -54,9 +59,17 @@ public class RecommendFragment extends BaseFragment implements HttpRequestHandle
         mRecyclerView.setLayoutManager(layoutManager);
         mRecyclerView.addOnScrollListener(getOnBottomListener(layoutManager));
 
+        mHeaderView = LayoutInflater.from(getActivity()).inflate(R.layout.view_header, mRecyclerView, false);
+        mBanner = (ConvenientBanner) mHeaderView.findViewById(R.id.id_banner_first);
+        mBanner.setPageIndicator(new int[]{R.drawable.point_nomal, R.drawable.point_focured})
+                //设置指示器的方向
+                .setPageIndicatorAlign(ConvenientBanner.PageIndicatorAlign.ALIGN_PARENT_RIGHT);
+
         mArticleAdapter = new ArticlesAdapter(getActivity(), articles);
 
         mRecyclerView.setAdapter(mArticleAdapter);
+
+        mArticleAdapter.setHeaderView(mHeaderView);
 
         mSwipeLayout = (SwipeRefreshLayout) layout.findViewById(R.id.swipe_container);
 
@@ -69,7 +82,6 @@ public class RecommendFragment extends BaseFragment implements HttpRequestHandle
         mArticleAdapter.setOnItemClickListener(new BaseRecycleAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                //打开一个新的activity
                 Intent intent = new Intent(getActivity(), ArticleActivity.class);
                 int realPosition = position - 1;
                 intent.putExtra("article", articles.get(realPosition));
@@ -79,7 +91,7 @@ public class RecommendFragment extends BaseFragment implements HttpRequestHandle
         mSwipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                requestRecommends(true, mPage);
+                requestRecommends(true);
             }
         });
     }
@@ -88,15 +100,25 @@ public class RecommendFragment extends BaseFragment implements HttpRequestHandle
     public void onActivityCreated(Bundle savedInstanceState){
         super.onActivityCreated(savedInstanceState);
         mSwipeLayout.setRefreshing(true);
-        requestRecommends(false, mPage);
+        requestRecommends(false);
     }
 
-    private void requestRecommends(boolean refresh, int page){
+    //刷新,一般是在顶部
+    private void requestRecommends(boolean refresh){
+        mPage = 1;
         if (mIsLoading){
             return ;
         }
         mIsLoading = true;
-        ZWManager.getRecommends(getActivity(), refresh, page, this);
+        ZWManager.getRecommends(getActivity(), refresh, 1, this);
+    }
+
+    private void loadMore(){
+        if (mIsLoading){
+            return ;
+        }
+        mIsLoading = true;
+        ZWManager.getRecommends(getActivity(), true, mPage, this);
     }
 
     RecyclerView.OnScrollListener getOnBottomListener(final StaggeredGridLayoutManager layoutManager) {
@@ -109,8 +131,7 @@ public class RecommendFragment extends BaseFragment implements HttpRequestHandle
                     if (!mIsFirstTimeTouchBottom) {
                         mSwipeLayout.setRefreshing(true);
                         mPage += 1;
-                        Log.d("lee", "request page: " + mPage);
-                        requestRecommends(true, mPage);
+                        loadMore();
                     }
                     else {
                         mIsFirstTimeTouchBottom = false;
@@ -132,7 +153,26 @@ public class RecommendFragment extends BaseFragment implements HttpRequestHandle
 
         if (data.size() == 0) return;
 
+        if (mPage == 1){
+            //刷新,不是loadMore
+            articles.clear();
+        }
         articles.addAll(data);
+
+        //NOTE bannerList 是为了解决articles.subList带来的多线程安全问题.
+        ArrayList<ArticleModel> bannerList = new ArrayList<>();
+        for (int i = 0; i < 3; i++){
+            bannerList.add(articles.get(i));
+        }
+
+        //banner
+        mBanner.setPages(new CBViewHolderCreator<BannerHolderView>() {
+            @Override
+            public BannerHolderView createHolder() {
+                return new BannerHolderView();
+            }
+        }, bannerList);
+
         mArticleAdapter.notifyDataSetChanged();
     }
 
@@ -140,6 +180,19 @@ public class RecommendFragment extends BaseFragment implements HttpRequestHandle
     public void onFailure(String error) {
         mSwipeLayout.setRefreshing(false);
         mIsLoading = false;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        mBanner.startTurning(3500);
+
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        mBanner.stopTurning();
     }
 
 }

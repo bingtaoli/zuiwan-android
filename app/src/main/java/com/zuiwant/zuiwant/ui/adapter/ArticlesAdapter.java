@@ -1,7 +1,6 @@
 package com.zuiwant.zuiwant.ui.adapter;
 
 import android.content.Context;
-import android.graphics.Typeface;
 import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
@@ -13,9 +12,7 @@ import android.widget.TextView;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.zuiwant.zuiwant.R;
 import com.zuiwant.zuiwant.model.ArticleModel;
-import com.zuiwant.zuiwant.ui.widget.Banner;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -27,8 +24,7 @@ public class ArticlesAdapter extends BaseRecycleAdapter {
     private static final int TYPE_ITEM = 1;
 
     private List<ArticleModel> articles;
-    public Banner banner = null;
-    private boolean hasGotBannerArticles = false;
+    private View headerView;
 
     public ArticlesAdapter(Context context, List<ArticleModel> articlesList){
         super(context);
@@ -39,9 +35,7 @@ public class ArticlesAdapter extends BaseRecycleAdapter {
         if (viewType == TYPE_ITEM){
             return new ArticleViewHolder(inflater.inflate(R.layout.item_article, viewGroup, false));
         } else if (viewType == TYPE_HEADER){
-            View header = inflater.inflate(R.layout.banner, viewGroup, false);
-            banner = (Banner) header.findViewById(R.id.banner);
-            return new VHHeader(header);
+            return new VHHeader(headerView);
         }
         return null;
     }
@@ -61,10 +55,6 @@ public class ArticlesAdapter extends BaseRecycleAdapter {
                 articleViewHolder.ivCover.setImageURI(Uri.parse(article.articleImg));
             }
         } else if (viewHolder instanceof VHHeader){
-            if (!hasGotBannerArticles  && articles.size() > 2){
-                banner.setTopEntities(articles.subList(0, 3));
-                hasGotBannerArticles = true;
-            }
             StaggeredGridLayoutManager.LayoutParams layoutParams = (StaggeredGridLayoutManager.LayoutParams) viewHolder.itemView.getLayoutParams();
             layoutParams.setFullSpan(true);
         }
@@ -85,10 +75,15 @@ public class ArticlesAdapter extends BaseRecycleAdapter {
 
     @Override
     public int getItemViewType(int position) {
-        if (isPositionHeader(position)){
+        if (isPositionHeader(position) && headerView != null){
             return TYPE_HEADER;
         }
         return TYPE_ITEM;
+    }
+
+    public void setHeaderView(View headerView) {
+        this.headerView = headerView;
+        notifyItemChanged(0);
     }
 
     public class ArticleViewHolder extends BaseViewHolder {

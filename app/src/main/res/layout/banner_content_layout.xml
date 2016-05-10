@@ -1,16 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent"
+    xmlns:fresco="http://schemas.android.com/apk/res-auto">
 
     <!--
     banner的每一个item
     -->
-    <ImageView
+    <com.facebook.drawee.view.SimpleDraweeView
         android:id="@+id/iv_title"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:scaleType="centerCrop" />
+        fresco:actualImageScaleType="centerCrop"
+        fresco:placeholderImage="@drawable/ic_default_cover"
+        fresco:placeholderImageScaleType="centerInside"/>
 
     <LinearLayout
         android:id="@+id/background_transparent"
