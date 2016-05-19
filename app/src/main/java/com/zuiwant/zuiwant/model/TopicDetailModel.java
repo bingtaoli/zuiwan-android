@@ -35,4 +35,13 @@ public class TopicDetailModel extends ZuiwantModel {
             articles.add(article);
         }
     }
+
+    public void set(TopicDetailModel topicDetailModel){
+        this.articleCount = topicDetailModel.articleCount;
+        this.articles = topicDetailModel.articles;
+        this.topicImg = topicDetailModel.topicImg;
+        this.topicName = topicDetailModel.topicName;
+        this.topicIntro = topicDetailModel.topicIntro;
+    }
+
 }

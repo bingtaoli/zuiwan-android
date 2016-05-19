@@ -55,7 +55,8 @@ public class ArticlesAdapter extends BaseRecycleAdapter {
                 articleViewHolder.ivCover.setImageURI(Uri.parse(article.articleImg));
             }
         } else if (viewHolder instanceof VHHeader){
-            StaggeredGridLayoutManager.LayoutParams layoutParams = (StaggeredGridLayoutManager.LayoutParams) viewHolder.itemView.getLayoutParams();
+            StaggeredGridLayoutManager.LayoutParams layoutParams =
+                    (StaggeredGridLayoutManager.LayoutParams) viewHolder.itemView.getLayoutParams();
             layoutParams.setFullSpan(true);
         }
     }

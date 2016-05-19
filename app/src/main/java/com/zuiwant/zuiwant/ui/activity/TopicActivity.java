@@ -23,8 +23,7 @@ import java.util.ArrayList;
 public class TopicActivity extends AppCompatActivity
         implements HttpRequestHandler<ArrayList<TopicDetailModel>> {
 
-    private TopicDetailModel topicDetail;
-    private ArrayList<ArticleModel> topicArticles = new ArrayList<>();
+    private TopicDetailModel topicDetail = new TopicDetailModel();
     private SwipeRefreshLayout swipeRefreshLayout;
     private RecyclerView recyclerView;
     private TopicArticlesAdapter adapter;
@@ -38,7 +37,7 @@ public class TopicActivity extends AppCompatActivity
 
         setContentView(R.layout.activity_topic_detail);
 
-        adapter = new TopicArticlesAdapter(this, topicArticles);
+        adapter = new TopicArticlesAdapter(this, topicDetail);
 
         swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_container);
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -76,8 +75,8 @@ public class TopicActivity extends AppCompatActivity
 
     @Override
     public void onSuccess(ArrayList<TopicDetailModel> data, int totalPages, int currentPage) {
-        topicDetail = data.get(0);
-        topicArticles.addAll(topicDetail.articles);
+        //为topicDetail赋值
+        topicDetail.set(data.get(0));
         adapter.notifyDataSetChanged();
     }
 
